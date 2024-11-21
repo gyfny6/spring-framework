@@ -107,7 +107,7 @@ class BeanDefinitionValueResolver {
 		// to another bean to be resolved.
 		if (value instanceof RuntimeBeanReference) {
 			RuntimeBeanReference ref = (RuntimeBeanReference) value;
-			return resolveReference(argName, ref);
+			return resolveReference(argName, ref);//如果是引用解析引用
 		}
 		else if (value instanceof RuntimeBeanNameReference) {
 			String refName = ((RuntimeBeanNameReference) value).getBeanName();
@@ -345,7 +345,7 @@ class BeanDefinitionValueResolver {
 		return actualInnerBeanName;
 	}
 
-	/**
+	/**解析引用bean(依赖bean)
 	 * Resolve a reference to another bean in the factory.
 	 */
 	@Nullable
@@ -365,7 +365,7 @@ class BeanDefinitionValueResolver {
 			}
 			else {
 				bean = this.beanFactory.getBean(refName);
-				this.beanFactory.registerDependentBean(refName, this.beanName);
+				this.beanFactory.registerDependentBean(refName, this.beanName);//注册依赖信息
 			}
 			if (bean instanceof NullBean) {
 				bean = null;

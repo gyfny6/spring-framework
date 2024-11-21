@@ -56,7 +56,7 @@ import org.springframework.util.StringUtils;
 class TypeConverterDelegate {
 
 	private static final Log logger = LogFactory.getLog(TypeConverterDelegate.class);
-
+	//
 	private final PropertyEditorRegistrySupport propertyEditorRegistry;
 
 	@Nullable
@@ -187,9 +187,9 @@ class TypeConverterDelegate {
 				}
 			}
 			if (editor == null) {
-				editor = findDefaultEditor(requiredType);
+				editor = findDefaultEditor(requiredType);//找到需要类型的便器器
 			}
-			convertedValue = doConvertValue(oldValue, convertedValue, requiredType, editor);
+			convertedValue = doConvertValue(oldValue, convertedValue, requiredType, editor);//使用期望类型的编辑器editor将值convertedValue转成requiredType(需要类型)
 		}
 
 		boolean standardConversion = false;
@@ -381,10 +381,10 @@ class TypeConverterDelegate {
 	 * Convert the value to the required type (if necessary from a String),
 	 * using the given property editor.
 	 * @param oldValue the previous value, if available (may be {@code null})
-	 * @param newValue the proposed new value
-	 * @param requiredType the type we must convert to
+	 * @param newValue the proposed new value 原始值
+	 * @param requiredType the type we must convert to 目标类型
 	 * (or {@code null} if not known, for example in case of a collection element)
-	 * @param editor the PropertyEditor to use
+	 * @param editor the PropertyEditor to use 属性编辑器(将原始值转换为目标类型)
 	 * @return the new value, possibly the result of type conversion
 	 * @throws IllegalArgumentException if type conversion failed
 	 */

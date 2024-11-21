@@ -105,10 +105,12 @@ public abstract class ResourceUtils {
 		if (resourceLocation == null) {
 			return false;
 		}
+		//以"classpath:"开头的是URL
 		if (resourceLocation.startsWith(CLASSPATH_URL_PREFIX)) {
 			return true;
 		}
 		try {
+			//能根据resourceLocation构建出URL的是URL
 			new URL(resourceLocation);
 			return true;
 		}
@@ -378,6 +380,7 @@ public abstract class ResourceUtils {
 	 * @throws URISyntaxException if the location wasn't a valid URI
 	 */
 	public static URI toURI(String location) throws URISyntaxException {
+		//根据字符串，创建URI的时候用使用"%20"替换字符串中的" "
 		return new URI(StringUtils.replace(location, " ", "%20"));
 	}
 

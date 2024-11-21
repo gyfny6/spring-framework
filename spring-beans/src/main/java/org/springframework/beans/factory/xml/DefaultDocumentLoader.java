@@ -62,18 +62,28 @@ public class DefaultDocumentLoader implements DocumentLoader {
 
 
 	/**
+	 * 从资源文件转换为Document
 	 * Load the {@link Document} at the supplied {@link InputSource} using the standard JAXP-configured
 	 * XML parser.
+	 * @param inputSource xml资源
+	 * @param entityResolver 解析器：自定义如何获取DTD的验证文件
+	 * @param errorHandler 错误处理器
+	 * @param validationMode 验证模式
+	 * @param namespaceAware 是否支持命名空间
+	 * @return
+	 * @throws Exception
 	 */
 	@Override
 	public Document loadDocument(InputSource inputSource, EntityResolver entityResolver,
 			ErrorHandler errorHandler, int validationMode, boolean namespaceAware) throws Exception {
-
+		//①创建DocumentBuilderFactory
 		DocumentBuilderFactory factory = createDocumentBuilderFactory(validationMode, namespaceAware);
 		if (logger.isTraceEnabled()) {
 			logger.trace("Using JAXP provider [" + factory.getClass().getName() + "]");
 		}
+		//②创建DocumentBuilder
 		DocumentBuilder builder = createDocumentBuilder(factory, entityResolver, errorHandler);
+		//③解析xml inputSource 返回Document对象
 		return builder.parse(inputSource);
 	}
 
@@ -89,13 +99,13 @@ public class DefaultDocumentLoader implements DocumentLoader {
 			throws ParserConfigurationException {
 
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-		factory.setNamespaceAware(namespaceAware);
+		factory.setNamespaceAware(namespaceAware);//设置命名空间支持
 
 		if (validationMode != XmlValidationModeDetector.VALIDATION_NONE) {
-			factory.setValidating(true);
+			factory.setValidating(true);//开启校验，默认是关闭的
 			if (validationMode == XmlValidationModeDetector.VALIDATION_XSD) {
 				// Enforce namespace aware for XSD...
-				factory.setNamespaceAware(true);
+				factory.setNamespaceAware(true);//XSD强制支持命令空间
 				try {
 					factory.setAttribute(SCHEMA_LANGUAGE_ATTRIBUTE, XSD_SCHEMA_LANGUAGE);
 				}
@@ -130,9 +140,11 @@ public class DefaultDocumentLoader implements DocumentLoader {
 
 		DocumentBuilder docBuilder = factory.newDocumentBuilder();
 		if (entityResolver != null) {
+			//设置文件解析器-EntityResolver
 			docBuilder.setEntityResolver(entityResolver);
 		}
 		if (errorHandler != null) {
+			//设置错误处理器-ErrorHandler
 			docBuilder.setErrorHandler(errorHandler);
 		}
 		return docBuilder;

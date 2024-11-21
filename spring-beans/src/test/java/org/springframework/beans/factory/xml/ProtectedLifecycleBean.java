@@ -145,7 +145,7 @@ class ProtectedLifecycleBean implements BeanNameAware, BeanFactoryAware, Initial
 		return destroyed;
 	}
 
-
+	//该PostProcessor执行ProtectedLifecycleBean.postProcessBeforeInit()和ProtectedLifecycleBean.postProcessAfterInitialization()
 	public static class PostProcessor implements BeanPostProcessor {
 
 		@Override

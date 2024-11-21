@@ -43,6 +43,8 @@ public abstract class ResourcePatternUtils {
 	 * @see java.net.URL
 	 */
 	public static boolean isUrl(@Nullable String resourceLocation) {
+		//以"classpath*:"或者"classpath:"开头的为绝对路径
+		//能够根据resourceLocation构建出URL的为绝对路径
 		return (resourceLocation != null &&
 				(resourceLocation.startsWith(ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX) ||
 						ResourceUtils.isUrl(resourceLocation)));

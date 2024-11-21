@@ -35,7 +35,7 @@ import org.springframework.lang.Nullable;
  * @since 2.0
  */
 public class PrioritizedParameterNameDiscoverer implements ParameterNameDiscoverer {
-
+	//组合模式，组合了多个参数名字发现器
 	private final List<ParameterNameDiscoverer> parameterNameDiscoverers = new LinkedList<>();
 
 

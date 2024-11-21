@@ -96,6 +96,23 @@ public class XmlListableBeanFactoryTests extends AbstractListableBeanFactoryTest
 		return factory;
 	}
 
+	@Test
+	public void factorySingleton() throws Exception {
+		assertTrue(getBeanFactory().isSingleton("&singletonFactory"));
+		assertTrue(getBeanFactory().isSingleton("singletonFactory"));
+		//如果beanName对应的是FactoryBean,会调用FactoryBean.getObject()方法获取对象
+		TestBean tb = (TestBean) getBeanFactory().getBean("singletonFactory");
+		assertTrue("Singleton from factory has correct name, not " + tb.getName(), tb.getName().equals(DummyFactory.SINGLETON_NAME));
+		//beanName是&开头,直接返回BeanFactory本身
+
+		DummyFactory factory = (DummyFactory) getBeanFactory().getBean("&singletonFactory");
+		TestBean tb2 = (TestBean) getBeanFactory().getBean("singletonFactory");
+		//BeanFactory.getBean(beanName),beanName对应的FactoryBean
+		//先会检查缓存FactoryBeanRegistrySupport.factoryBeanObjectCache,如果缓存中有对应对象,就直接返回,不会调用FactoryBean.getObject()创建对象
+		assertTrue("Singleton references ==", tb == tb2);
+		assertTrue("FactoryBean is BeanFactoryAware", factory.getBeanFactory() != null);
+	}
+
 
 	@Test
 	@Override

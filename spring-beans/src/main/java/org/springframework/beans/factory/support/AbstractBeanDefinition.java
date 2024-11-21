@@ -136,7 +136,7 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 	 */
 	public static final String INFER_METHOD = "(inferred)";
 
-
+	//String->全路径类名 class->类的class信息
 	@Nullable
 	private volatile Object beanClass;
 
@@ -172,10 +172,10 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 
 	@Nullable
 	private String factoryMethodName;
-
+	//存储的是xml构造参数的值,对应<constructor-arg>标签
 	@Nullable
 	private ConstructorArgumentValues constructorArgumentValues;
-
+	//存储的是xml中属性的值,为了映射成bean的属性,对应<property>标签
 	@Nullable
 	private MutablePropertyValues propertyValues;
 
@@ -812,7 +812,7 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 		return this.constructorArgumentValues;
 	}
 
-	/**
+	/**判断定义信息是否有构造函数参数
 	 * Return if there are constructor argument values defined for this bean.
 	 */
 	@Override

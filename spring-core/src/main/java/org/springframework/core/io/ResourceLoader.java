@@ -20,6 +20,8 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.ResourceUtils;
 
 /**
+ * 统一资源定位器:负责资源的加载
+ * 主要应用于根据给定的资源文件地址，返回对应的 Resource 。
  * Strategy interface for loading resources (e.. class path or file system
  * resources). An {@link org.springframework.context.ApplicationContext}
  * is required to provide this functionality, plus extended
@@ -46,6 +48,7 @@ public interface ResourceLoader {
 
 
 	/**
+	 * 根据给定的location返回Resource
 	 * Return a Resource handle for the specified resource location.
 	 * <p>The handle should always be a reusable resource descriptor,
 	 * allowing for multiple {@link Resource#getInputStream()} calls.

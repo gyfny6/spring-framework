@@ -34,6 +34,7 @@ import org.springframework.context.NoSuchMessageException;
 import org.springframework.context.TestListener;
 import org.springframework.mock.web.test.MockServletContext;
 import org.springframework.tests.sample.beans.TestBean;
+import org.springframework.tests.sample.beans.factory.DummyFactory;
 import org.springframework.web.context.support.XmlWebApplicationContext;
 
 import static org.hamcrest.CoreMatchers.*;

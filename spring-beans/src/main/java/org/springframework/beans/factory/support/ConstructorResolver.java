@@ -183,7 +183,7 @@ class ConstructorResolver {
 				minNrOfArgs = explicitArgs.length;
 			}
 			else {
-				ConstructorArgumentValues cargs = mbd.getConstructorArgumentValues();
+				ConstructorArgumentValues cargs = mbd.getConstructorArgumentValues();//bean定义信息的参数List
 				resolvedValues = new ConstructorArgumentValues();
 				minNrOfArgs = resolveConstructorArguments(beanName, mbd, bw, cargs, resolvedValues);
 			}
@@ -192,10 +192,10 @@ class ConstructorResolver {
 			int minTypeDiffWeight = Integer.MAX_VALUE;
 			Set<Constructor<?>> ambiguousConstructors = null;
 			LinkedList<UnsatisfiedDependencyException> causes = null;
-
+			//根据bean定义信息匹配合适的构造函数
 			for (Constructor<?> candidate : candidates) {
 				Class<?>[] paramTypes = candidate.getParameterTypes();
-
+				//如果已经找到可以使用的构造函数且函数找到的构造函数参数数量大于当前遍历的构造函数的参数数量
 				if (constructorToUse != null && argsToUse.length > paramTypes.length) {
 					// Already found greedy constructor that can be satisfied ->
 					// do not look any further, there are only less greedy constructors left.
@@ -204,15 +204,15 @@ class ConstructorResolver {
 				if (paramTypes.length < minNrOfArgs) {
 					continue;
 				}
-
 				ArgumentsHolder argsHolder;
 				if (resolvedValues != null) {
 					try {
+						//参数列表的名字
 						String[] paramNames = ConstructorPropertiesChecker.evaluate(candidate, paramTypes.length);
 						if (paramNames == null) {
 							ParameterNameDiscoverer pnd = this.beanFactory.getParameterNameDiscoverer();
 							if (pnd != null) {
-								paramNames = pnd.getParameterNames(candidate);
+								paramNames = pnd.getParameterNames(candidate);//获取候选构造器的参数名称列表
 							}
 						}
 						argsHolder = createArgumentArray(beanName, mbd, resolvedValues, bw, paramTypes, paramNames,
@@ -285,7 +285,7 @@ class ConstructorResolver {
 		return bw;
 	}
 
-	private Object instantiate(
+	private Object instantiate(//实例化
 			String beanName, RootBeanDefinition mbd, Constructor constructorToUse, Object[] argsToUse) {
 
 		try {
@@ -682,7 +682,7 @@ class ConstructorResolver {
 		return minNrOfArgs;
 	}
 
-	/**
+	/**创建参数列表
 	 * Create an array of arguments to invoke a constructor or factory method,
 	 * given the resolved constructor argument values.
 	 */
@@ -892,9 +892,9 @@ class ConstructorResolver {
 	 * Private inner class for holding argument combinations.
 	 */
 	private static class ArgumentsHolder {
-
+		//构造函数的原始参数
 		public final Object[] rawArguments;
-
+		//构造函数的参数实际值
 		public final Object[] arguments;
 
 		public final Object[] preparedArguments;

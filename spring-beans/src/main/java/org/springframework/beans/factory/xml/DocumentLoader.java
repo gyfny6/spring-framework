@@ -31,6 +31,7 @@ import org.xml.sax.InputSource;
 public interface DocumentLoader {
 
 	/**
+	 * 获取XML Document实例
 	 * Load a {@link Document document} from the supplied {@link InputSource source}.
 	 * @param inputSource the source of the document that is to be loaded
 	 * @param entityResolver the resolver that is to be used to resolve any entities

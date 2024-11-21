@@ -29,7 +29,7 @@ import static org.junit.Assert.*;
 public class PropertiesBeanDefinitionReaderTests {
 
 	private final DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
-
+	//用来读取properties文件的bean定义信息
 	private final PropertiesBeanDefinitionReader reader = new PropertiesBeanDefinitionReader(this.beanFactory);
 
 

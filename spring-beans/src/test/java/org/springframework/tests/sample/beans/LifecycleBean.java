@@ -147,9 +147,9 @@ public class LifecycleBean implements BeanNameAware, BeanFactoryAware, Initializ
 		return destroyed;
 	}
 
-
+	//该BeanPostProcessor执行LifecycleBean.postProcessBeforeInit()&LifecycleBean.postProcessAfterInitialization()
 	public static class PostProcessor implements BeanPostProcessor {
-
+		//LifecycleBean.postProcessBeforeInit()方法通过PostProcessor.postProcessBeforeInitialization()触发
 		@Override
 		public Object postProcessBeforeInitialization(Object bean, String name) throws BeansException {
 			if (bean instanceof LifecycleBean) {
@@ -157,7 +157,7 @@ public class LifecycleBean implements BeanNameAware, BeanFactoryAware, Initializ
 			}
 			return bean;
 		}
-
+		//LifecycleBean.postProcessAfterInit()方法通过PostProcessor.postProcessAfterInitialization()触发
 		@Override
 		public Object postProcessAfterInitialization(Object bean, String name) throws BeansException {
 			if (bean instanceof LifecycleBean) {

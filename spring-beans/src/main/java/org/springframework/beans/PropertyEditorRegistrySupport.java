@@ -199,7 +199,7 @@ public class PropertyEditorRegistrySupport implements PropertyEditorRegistry {
 	 */
 	private void createDefaultEditors() {
 		this.defaultEditors = new HashMap<>(64);
-
+		//默认的各种类型的编辑器
 		// Simple editors, without parameterization capabilities.
 		// The JDK does not contain a default editor for any of these target types.
 		this.defaultEditors.put(Charset.class, new CharsetEditor());

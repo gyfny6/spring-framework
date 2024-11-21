@@ -28,7 +28,7 @@ import org.springframework.util.Assert;
 /**
  * {@link EntityResolver} implementation that delegates to a {@link BeansDtdResolver}
  * and a {@link PluggableSchemaResolver} for DTDs and XML schemas, respectively.
- *
+ * 委派模式：非常规的23种设计模式
  * @author Rob Harrop
  * @author Juergen Hoeller
  * @author Rick Evans
@@ -44,7 +44,7 @@ public class DelegatingEntityResolver implements EntityResolver {
 	/** Suffix for schema definition files. */
 	public static final String XSD_SUFFIX = ".xsd";
 
-
+	//DTD EntityResolver
 	private final EntityResolver dtdResolver;
 
 	private final EntityResolver schemaResolver;
@@ -59,7 +59,9 @@ public class DelegatingEntityResolver implements EntityResolver {
 	 * (can be {@code null}) to use the default ClassLoader)
 	 */
 	public DelegatingEntityResolver(@Nullable ClassLoader classLoader) {
+		//dtd验证模式，尝试读取类路径下的spring-beans.dtd验证文件
 		this.dtdResolver = new BeansDtdResolver();
+		//xsd验证模式，把url映射成本地文件，尝试读取本地spring-beans.xsd验证文件
 		this.schemaResolver = new PluggableSchemaResolver(classLoader);
 	}
 
@@ -77,14 +79,26 @@ public class DelegatingEntityResolver implements EntityResolver {
 	}
 
 
+	/**
+	 *
+	 * @param publicId 外部实体的公共标识符
+	 * @param systemId 外部实体的系统标识符(路径)
+	 *                 例如test.xml文件的http://www.springframework.org/dtd/spring-beans-2.0.dtd
+	 * @return 根据验证模式进行委派
+	 * 委派模式
+	 * @throws SAXException
+	 * @throws IOException
+	 */
 	@Override
 	@Nullable
 	public InputSource resolveEntity(String publicId, @Nullable String systemId) throws SAXException, IOException {
 		if (systemId != null) {
 			if (systemId.endsWith(DTD_SUFFIX)) {
+				//DTD模式(.dtd) -> BeansDtdResolver
 				return this.dtdResolver.resolveEntity(publicId, systemId);
 			}
 			else if (systemId.endsWith(XSD_SUFFIX)) {
+				//XSD模式(.xsd) -> PluggableSchemaResolver
 				return this.schemaResolver.resolveEntity(publicId, systemId);
 			}
 		}

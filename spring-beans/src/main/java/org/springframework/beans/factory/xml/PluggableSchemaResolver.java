@@ -68,10 +68,13 @@ public class PluggableSchemaResolver implements EntityResolver {
 
 	@Nullable
 	private final ClassLoader classLoader;
-
+	//schema文件地址，默认是META-INF/spring.schemas
 	private final String schemaMappingsLocation;
 
 	/** Stores the mapping of schema URL -> local schema path. */
+	//namespaceURI 与 Schema 文件地址的映射集合
+	//就是远程地址映射到本地地址
+	//double check单例模式
 	@Nullable
 	private volatile Map<String, String> schemaMappings;
 
@@ -103,6 +106,10 @@ public class PluggableSchemaResolver implements EntityResolver {
 		this.schemaMappingsLocation = schemaMappingsLocation;
 	}
 
+	/**
+	 * @return InputSource 从systemId获取到本地地址，然后读取
+	 * @throws IOException
+	 */
 	@Override
 	@Nullable
 	public InputSource resolveEntity(String publicId, @Nullable String systemId) throws IOException {
@@ -112,6 +119,7 @@ public class PluggableSchemaResolver implements EntityResolver {
 		}
 
 		if (systemId != null) {
+			//获取resource的位置
 			String resourceLocation = getSchemaMappings().get(systemId);
 			if (resourceLocation != null) {
 				Resource resource = new ClassPathResource(resourceLocation, this.classLoader);
@@ -136,9 +144,13 @@ public class PluggableSchemaResolver implements EntityResolver {
 
 	/**
 	 * Load the specified schema mappings lazily.
+	 * xsd文件：远程地址到本地地址的映射
+	 * 读取META-INF/spring.schemas到Map中
+	 * @Return Map xsd文件远程地址->本地地址
 	 */
 	private Map<String, String> getSchemaMappings() {
 		Map<String, String> schemaMappings = this.schemaMappings;
+		//double check实现schemaMappings懒加载的单例
 		if (schemaMappings == null) {
 			synchronized (this) {
 				schemaMappings = this.schemaMappings;

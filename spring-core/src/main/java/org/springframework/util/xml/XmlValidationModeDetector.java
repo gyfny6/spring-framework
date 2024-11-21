@@ -35,6 +35,7 @@ import org.springframework.util.StringUtils;
 public class XmlValidationModeDetector {
 
 	/**
+	 * 校验关闭
 	 * Indicates that the validation should be disabled.
 	 */
 	public static final int VALIDATION_NONE = 0;
@@ -91,17 +92,22 @@ public class XmlValidationModeDetector {
 		// Peek into the file to look for DOCTYPE.
 		BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 		try {
+			//true:DTD or false(默认):XSD
 			boolean isDtdValidated = false;
 			String content;
+			//逐行读取xml文件内容
 			while ((content = reader.readLine()) != null) {
 				content = consumeCommentTokens(content);
+				//跳过注释
 				if (this.inComment || !StringUtils.hasText(content)) {
 					continue;
 				}
+				//有DOCTYPE标签，则是DTD
 				if (hasDoctype(content)) {
 					isDtdValidated = true;
 					break;
 				}
+				//<且后面有字母，就是XSD
 				if (hasOpeningTag(content)) {
 					// End of meaningful data...
 					break;
@@ -112,6 +118,7 @@ public class XmlValidationModeDetector {
 		catch (CharConversionException ex) {
 			// Choked on some character encoding...
 			// Leave the decision up to the caller.
+			//自动模式
 			return VALIDATION_AUTO;
 		}
 		finally {

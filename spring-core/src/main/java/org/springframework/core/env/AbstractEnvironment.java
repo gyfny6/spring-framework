@@ -102,9 +102,9 @@ public abstract class AbstractEnvironment implements ConfigurableEnvironment {
 
 
 	protected final Log logger = LogFactory.getLog(getClass());
-
+	//激活的配置文件(高优先级) -> 对应配置spring.profiles.active
 	private final Set<String> activeProfiles = new LinkedHashSet<>();
-
+	//默认激活的配置文件(低优先级) -> 对应配置spring.profiles.default -> 如果没设置则是default
 	private final Set<String> defaultProfiles = new LinkedHashSet<>(getReservedDefaultProfiles());
 
 	private final MutablePropertySources propertySources = new MutablePropertySources();
@@ -235,6 +235,7 @@ public abstract class AbstractEnvironment implements ConfigurableEnvironment {
 	protected Set<String> doGetActiveProfiles() {
 		synchronized (this.activeProfiles) {
 			if (this.activeProfiles.isEmpty()) {
+				//spring.profiles.active -> 激活的配置文件
 				String profiles = getProperty(ACTIVE_PROFILES_PROPERTY_NAME);
 				if (StringUtils.hasText(profiles)) {
 					setActiveProfiles(StringUtils.commaDelimitedListToStringArray(
@@ -293,6 +294,7 @@ public abstract class AbstractEnvironment implements ConfigurableEnvironment {
 	protected Set<String> doGetDefaultProfiles() {
 		synchronized (this.defaultProfiles) {
 			if (this.defaultProfiles.equals(getReservedDefaultProfiles())) {
+				//spring.profiles.default -> 默认激活的配置文件
 				String profiles = getProperty(DEFAULT_PROFILES_PROPERTY_NAME);
 				if (StringUtils.hasText(profiles)) {
 					setDefaultProfiles(StringUtils.commaDelimitedListToStringArray(

@@ -24,6 +24,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 /**
+ * BeanDefinitionHolder持有①BeanDefinition②beanName③aliases
  * Holder for a BeanDefinition with name and aliases.
  * Can be registered as a placeholder for an inner bean.
  *
@@ -38,11 +39,11 @@ import org.springframework.util.StringUtils;
  * @see org.springframework.beans.factory.support.ChildBeanDefinition
  */
 public class BeanDefinitionHolder implements BeanMetadataElement {
-
+	//bean定义信息
 	private final BeanDefinition beanDefinition;
-
+	//bean名字
 	private final String beanName;
-
+	//别名
 	@Nullable
 	private final String[] aliases;
 
