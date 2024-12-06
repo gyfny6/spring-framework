@@ -45,7 +45,7 @@ import org.springframework.lang.Nullable;
 public class XmlReaderContext extends ReaderContext {
 
 	private final XmlBeanDefinitionReader reader;
-
+	//NamespaceHandler解析器 -> DefaultNamespaceHandlerResolver
 	private final NamespaceHandlerResolver namespaceHandlerResolver;
 
 

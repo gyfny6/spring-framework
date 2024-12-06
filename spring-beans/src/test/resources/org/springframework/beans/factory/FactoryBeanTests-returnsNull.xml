@@ -4,5 +4,7 @@
 <beans>
 
 	<bean id="factoryBean" class="org.springframework.beans.factory.FactoryBeanTests$NullReturningFactoryBean"/>
+	<bean id="prototypeGamma" class="org.springframework.beans.factory.FactoryBeanTests.Gamma" scope="prototype"/>
+	<bean id="singleGamma" class="org.springframework.beans.factory.FactoryBeanTests.Gamma"/>
 
 </beans>

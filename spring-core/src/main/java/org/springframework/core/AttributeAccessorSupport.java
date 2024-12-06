@@ -40,7 +40,11 @@ public abstract class AttributeAccessorSupport implements AttributeAccessor, Ser
 	/** Map with String keys and Object values. */
 	private final Map<String, Object> attributes = new LinkedHashMap<>();
 
-
+	/**
+	 * 实现了对元素据的添加删除
+	 * @param name the unique attribute key
+	 * @param value the attribute value to be attached
+	 */
 	@Override
 	public void setAttribute(String name, @Nullable Object value) {
 		Assert.notNull(name, "Name must not be null");
@@ -52,6 +56,11 @@ public abstract class AttributeAccessorSupport implements AttributeAccessor, Ser
 		}
 	}
 
+	/**
+	 * 获得属性
+	 * @param name the unique attribute key
+	 * @return
+	 */
 	@Override
 	@Nullable
 	public Object getAttribute(String name) {

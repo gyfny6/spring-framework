@@ -48,7 +48,7 @@ public class PropertyValue extends BeanMetadataAttributeAccessor implements Seri
 	private final Object value;
 
 	private boolean optional = false;
-
+	//标记属性是否已经被转换
 	private boolean converted = false;
 
 	@Nullable

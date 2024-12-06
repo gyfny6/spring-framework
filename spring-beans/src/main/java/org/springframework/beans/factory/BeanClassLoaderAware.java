@@ -38,6 +38,7 @@ package org.springframework.beans.factory;
 public interface BeanClassLoaderAware extends Aware {
 
 	/**
+	 * 在population之后，初始化回调(InitializingBean.afterPropertiesSet() or init-method)之前
 	 * Callback that supplies the bean {@link ClassLoader class loader} to
 	 * a bean instance.
 	 * <p>Invoked <i>after</i> the population of normal bean properties but

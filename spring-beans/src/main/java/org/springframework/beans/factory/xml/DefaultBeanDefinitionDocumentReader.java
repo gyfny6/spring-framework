@@ -152,9 +152,9 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 			}
 		}
 
-		preProcessXml(root);//默认空方法
+		preProcessXml(root);//前置增强处理，默认空方法
 		parseBeanDefinitions(root, this.delegate);//解析注册bean定义信息
-		postProcessXml(root);//默认空方法
+		postProcessXml(root);//后置增强处理，默认空方法
 		//设置delegate为老的BeanDefinitionParserDelegate
 		this.delegate = parent;
 	}
@@ -187,7 +187,7 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 						parseDefaultElement(ele, delegate);//解析默认标签
 					}
 					else {//否咋使用自定义解析
-						//比如:<tx:annotation-driven>
+						//比如:<tx:annotation-driven>,比如自己写的<myTag:user>
 						delegate.parseCustomElement(ele);//解析自定义标签
 					}
 				}
@@ -329,13 +329,13 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 	 * @param delegate
 	 */
 	protected void processBeanDefinition(Element ele, BeanDefinitionParserDelegate delegate) {
-		//<1>尝试解析，解析成功返回BeanDefinitionHolder。BeanDefinitionHolder包含了name、alias、BeanDefinition
+		//<1>解析标签的默认标签，解析成功返回BeanDefinitionHolder。BeanDefinitionHolder包含了name、alias、BeanDefinition
 		BeanDefinitionHolder bdHolder = delegate.parseBeanDefinitionElement(ele);
 		if (bdHolder != null) {
-			//处理自定义标签
+			//解析标签下的自定义标签
 			bdHolder = delegate.decorateBeanDefinitionIfRequired(ele, bdHolder);
 			try {
-				//进行BeanDefinition的注册
+				//注册解析的beanDefinition
 				// Register the final decorated instance.
 				BeanDefinitionReaderUtils.registerBeanDefinition(bdHolder, getReaderContext().getRegistry());
 			}

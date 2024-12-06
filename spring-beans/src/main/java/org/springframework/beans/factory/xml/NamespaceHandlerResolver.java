@@ -31,6 +31,7 @@ import org.springframework.lang.Nullable;
 public interface NamespaceHandlerResolver {
 
 	/**
+	 * 对应的是/META-INF/spring.handlers中的关系
 	 * Resolve the namespace URI and return the located {@link NamespaceHandler}
 	 * implementation.
 	 * @param namespaceUri the relevant namespace URI

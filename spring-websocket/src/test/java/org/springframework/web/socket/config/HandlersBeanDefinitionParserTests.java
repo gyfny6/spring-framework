@@ -230,8 +230,9 @@ public class HandlersBeanDefinitionParserTests {
 
 
 	private void loadBeanDefinitions(String fileName) {
-		XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(this.appContext);
 		ClassPathResource resource = new ClassPathResource(fileName, HandlersBeanDefinitionParserTests.class);
+
+		XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(this.appContext);
 		reader.loadBeanDefinitions(resource);
 		this.appContext.refresh();
 	}

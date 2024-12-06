@@ -47,6 +47,7 @@ public abstract class NamespaceHandlerSupport implements NamespaceHandler {
 	/**
 	 * Stores the {@link BeanDefinitionParser} implementations keyed by the
 	 * local name of the {@link Element Elements} they handle.
+	 * Map<元素名称，标签解析器>
 	 */
 	private final Map<String, BeanDefinitionParser> parsers = new HashMap<>();
 
@@ -70,13 +71,14 @@ public abstract class NamespaceHandlerSupport implements NamespaceHandler {
 	@Override
 	@Nullable
 	public BeanDefinition parse(Element element, ParserContext parserContext) {
-		BeanDefinitionParser parser = findParserForElement(element, parserContext);
-		return (parser != null ? parser.parse(element, parserContext) : null);
+		BeanDefinitionParser parser = findParserForElement(element, parserContext);//获得元素对应的BeanDefinitionParser
+		return (parser != null ? parser.parse(element, parserContext) : null);//使用BeanDefinitionParser执行解析
 	}
 
 	/**
 	 * Locates the {@link BeanDefinitionParser} from the register implementations using
 	 * the local name of the supplied {@link Element}.
+	 * 使用元素名称获取BeanDefinitionParser
 	 */
 	@Nullable
 	private BeanDefinitionParser findParserForElement(Element element, ParserContext parserContext) {
@@ -127,6 +129,7 @@ public abstract class NamespaceHandlerSupport implements NamespaceHandler {
 		}
 		return decorator;
 	}
+
 
 
 	/**

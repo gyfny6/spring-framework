@@ -49,6 +49,7 @@ public class MutablePropertyValues implements PropertyValues, Serializable {
 	@Nullable
 	private Set<String> processedProperties;
 
+	//表示:属性属性是否已经进行了转换
 	private volatile boolean converted = false;
 
 

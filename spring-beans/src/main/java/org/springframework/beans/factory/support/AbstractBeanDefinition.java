@@ -159,14 +159,23 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 	private boolean primary = false;
 
 	private final Map<String, AutowireCandidateQualifier> qualifiers = new LinkedHashMap<>();
-
+	/**
+	 * 创建bean的Supplier
+	 * 如果该属性被设置，其他的构造方法以及工厂方法都没用用，会直接调取该Supplier获取实例
+	 */
 	@Nullable
 	private Supplier<?> instanceSupplier;
 
 	private boolean nonPublicAccessAllowed = true;
 
+	/**
+	 * 是否是宽松的构造函数解析
+	 */
 	private boolean lenientConstructorResolution = true;
 
+	/**
+	 * 工厂bean名称
+	 */
 	@Nullable
 	private String factoryBeanName;
 
@@ -191,7 +200,8 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 	private boolean enforceInitMethod = true;
 
 	private boolean enforceDestroyMethod = true;
-
+	//beanDefinition是否是合成的
+	//合成的：不是由应用程序本身定义的
 	private boolean synthetic = false;
 
 	private int role = BeanDefinition.ROLE_APPLICATION;
@@ -552,17 +562,17 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 	 * @see #AUTOWIRE_BY_TYPE
 	 */
 	public int getResolvedAutowireMode() {
-		if (this.autowireMode == AUTOWIRE_AUTODETECT) {
+		if (this.autowireMode == AUTOWIRE_AUTODETECT) {//通过bean自身确定检测模式
 			// Work out whether to apply setter autowiring or constructor autowiring.
 			// If it has a no-arg constructor it's deemed to be setter autowiring,
 			// otherwise we'll try constructor autowiring.
 			Constructor<?>[] constructors = getBeanClass().getConstructors();
 			for (Constructor<?> constructor : constructors) {
 				if (constructor.getParameterCount() == 0) {
-					return AUTOWIRE_BY_TYPE;
+					return AUTOWIRE_BY_TYPE;//如果有没有参数的构造函数 -> 使用按照类型自动装配
 				}
 			}
-			return AUTOWIRE_CONSTRUCTOR;
+			return AUTOWIRE_CONSTRUCTOR;//否者按照构造函数自动装配
 		}
 		else {
 			return this.autowireMode;
@@ -651,6 +661,7 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 	}
 
 	/**
+	 * <bean>的qualifier子元素
 	 * Register a qualifier to be used for autowire candidate resolution,
 	 * keyed by the qualifier's type name.
 	 * @see AutowireCandidateQualifier#getTypeName()
@@ -812,7 +823,8 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 		return this.constructorArgumentValues;
 	}
 
-	/**判断定义信息是否有构造函数参数
+	/**
+	 * 判断定义信息是否有构造函数参数
 	 * Return if there are constructor argument values defined for this bean.
 	 */
 	@Override
@@ -1075,7 +1087,7 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 			Set<MethodOverride> overrides = getMethodOverrides().getOverrides();
 			synchronized (overrides) {
 				for (MethodOverride mo : overrides) {
-					prepareMethodOverride(mo);
+					prepareMethodOverride(mo);//针对每一个MethodOverride，执行prepareMethodOverride
 				}
 			}
 		}
@@ -1089,13 +1101,15 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 	 * @throws BeanDefinitionValidationException in case of validation failure
 	 */
 	protected void prepareMethodOverride(MethodOverride mo) throws BeanDefinitionValidationException {
+		//从class中获取该方法名的个数
 		int count = ClassUtils.getMethodCountForName(getBeanClass(), mo.getMethodName());
-		if (count == 0) {
+		if (count == 0) {//没有该方法，说明beanDefinition的Override有误，抛出异常
 			throw new BeanDefinitionValidationException(
 					"Invalid method override: no method with name '" + mo.getMethodName() +
 					"' on class [" + getBeanClassName() + "]");
 		}
-		else if (count == 1) {
+		else if (count == 1) {//为1，则说明该类没有MethodName的重载方法
+			//性能优化：如果有重载方法，后续还需要根据参数来匹配是哪一个重载方法。只有一个方法的情况下就不需要匹配，肯定是它
 			// Mark override as not overloaded, to avoid the overhead of arg type checking.
 			mo.setOverloaded(false);
 		}

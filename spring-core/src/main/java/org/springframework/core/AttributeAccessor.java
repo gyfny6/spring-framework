@@ -19,6 +19,7 @@ package org.springframework.core;
 import org.springframework.lang.Nullable;
 
 /**
+ * 定义修改获取元数据的<meta>标签
  * Interface defining a generic contract for attaching and accessing metadata
  * to/from arbitrary objects.
  *

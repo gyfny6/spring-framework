@@ -17,6 +17,8 @@
 package org.springframework.beans.factory;
 
 /**
+ * 实现了该接口的bean是具有被Spring容器通知的能力，通知的方式是采用回调的方式
+ * Spring容器在初始化bean是，主动检测该bean是否实现了Aware接口。如果实现了，则回调期set方法将相应的参数设置给bean
  * A marker superinterface indicating that a bean is eligible to be notified by the
  * Spring container of a particular framework object through a callback-style method.
  * The actual method signature is determined by individual subinterfaces but should

@@ -880,6 +880,8 @@ public abstract class ClassUtils {
 	}
 
 	/**
+	 * 获取给定类的定义类，一般是直接返回类
+	 * 如果是CGLIB生成的子类，则返回原始类
 	 * Return the user-defined class for the given class: usually simply the given
 	 * class, but the original class in case of a CGLIB-generated subclass.
 	 * @param clazz the class to check

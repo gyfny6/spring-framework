@@ -60,25 +60,25 @@ public abstract class AbstractBeanDefinitionParser implements BeanDefinitionPars
 	@Override
 	@Nullable
 	public final BeanDefinition parse(Element element, ParserContext parserContext) {
-		AbstractBeanDefinition definition = parseInternal(element, parserContext);
+		AbstractBeanDefinition definition = parseInternal(element, parserContext);//内部解析(根本的解析过程)
 		if (definition != null && !parserContext.isNested()) {
 			try {
-				String id = resolveId(element, definition, parserContext);
+				String id = resolveId(element, definition, parserContext);//解析id
 				if (!StringUtils.hasText(id)) {
 					parserContext.getReaderContext().error(
 							"Id is required for element '" + parserContext.getDelegate().getLocalName(element)
 									+ "' when used as a top-level tag", element);
 				}
-				String[] aliases = null;
+				String[] aliases = null;//解析aliases属性
 				if (shouldParseNameAsAliases()) {
 					String name = element.getAttribute(NAME_ATTRIBUTE);
 					if (StringUtils.hasLength(name)) {
 						aliases = StringUtils.trimArrayElements(StringUtils.commaDelimitedListToStringArray(name));
 					}
 				}
-				BeanDefinitionHolder holder = new BeanDefinitionHolder(definition, id, aliases);
-				registerBeanDefinition(holder, parserContext.getRegistry());
-				if (shouldFireEvents()) {
+				BeanDefinitionHolder holder = new BeanDefinitionHolder(definition, id, aliases);//创建BeanDefinitionHolder对象
+				registerBeanDefinition(holder, parserContext.getRegistry());//注册beanDefinition
+				if (shouldFireEvents()) {//触发事件
 					BeanComponentDefinition componentDefinition = new BeanComponentDefinition(holder);
 					postProcessComponentDefinition(componentDefinition);
 					parserContext.registerComponent(componentDefinition);

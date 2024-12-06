@@ -51,7 +51,10 @@ public class FactoryBeanTests {
 	public void testFactoryBeanReturnsNull() throws Exception {
 		DefaultListableBeanFactory factory = new DefaultListableBeanFactory();
 		new XmlBeanDefinitionReader(factory).loadBeanDefinitions(RETURNS_NULL_CONTEXT);
-
+		factory.getBean("singleGamma");
+		factory.getBean("prototypeGamma");
+		factory.getBean("factoryBean");
+		assertEquals("null", factory.getBean("factoryBean").toString());
 		assertEquals("null", factory.getBean("factoryBean").toString());
 	}
 

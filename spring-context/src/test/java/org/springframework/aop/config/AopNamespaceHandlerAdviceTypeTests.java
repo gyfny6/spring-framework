@@ -17,10 +17,16 @@
 package org.springframework.aop.config;
 
 import org.junit.Test;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
+import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
+import org.springframework.context.ApplicationContext;
+import org.springframework.core.io.ClassPathResource;
 import org.xml.sax.SAXParseException;
 
 import org.springframework.beans.factory.BeanDefinitionStoreException;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import selftest.BeanPostProcessorTest;
+import selftest.MyApplicationAware;
 
 import static org.junit.Assert.*;
 
@@ -29,6 +35,26 @@ import static org.junit.Assert.*;
  * @author Chris Beams
  */
 public class AopNamespaceHandlerAdviceTypeTests {
+
+	@Test
+	public void test() {
+		System.out.println("====================");
+		//ApplicationContext applicationContext = new ClassPathXmlApplicationContext("org/springframework/aop/config/spring.xml");
+		//applicationContext.getBean(BeanPostProcessorTest.class);
+
+		ClassPathResource resource = new ClassPathResource("spring.xml",getClass());
+		DefaultListableBeanFactory factory = new DefaultListableBeanFactory();
+		XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(factory);
+
+		factory.addBeanPostProcessor(new BeanPostProcessorTest());
+		reader.loadBeanDefinitions(resource);
+
+		System.out.println(factory.getBean(BeanPostProcessorTest.class));
+
+		//MyApplicationAware applicationAware = (MyApplicationAware) factory.getBean("myApplicationAware");
+		//applicationAware.display();
+		System.out.println("====================");
+	}
 
 	@Test
 	public void testParsingOfAdviceTypes() {

@@ -4,7 +4,7 @@
 
 <beans>
 
-	<bean class="org.springframework.beans.factory.xml.DummyReferencer"/>
+	<bean class="org.springframework.beans.factory.xml.DummyReferencer" />
 
 	<bean class="org.springframework.beans.factory.xml.DummyReferencer"/>
 
@@ -44,7 +44,7 @@
 	<bean class="org.springframework.beans.factory.xml.DummyReferencer"/>
 
 
-	<bean id="rod" class="org.springframework.tests.sample.beans.TestBean">
+	<bean id="rod" class="org.springframework.tests.sample.beans.TestBean" >
 		<property name="name"><value><!-- a comment -->Rod</value></property>
 		<property name="age"><value>31</value></property>
 		<property name="spouse"><ref bean="father"/></property>
