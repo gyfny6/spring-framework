@@ -44,11 +44,12 @@ public class BeanFactoryAspectJAdvisorsBuilder {
 
 	private final AspectJAdvisorFactory advisorFactory;
 
+	//缓存标注了@Aspect的beanName
 	@Nullable
 	private volatile List<String> aspectBeanNames;
-
+	//Map<beanName,Advisor>:缓存单例advisor
 	private final Map<String, List<Advisor>> advisorsCache = new ConcurrentHashMap<>();
-
+	//Map<Advisor beanName,MetadataAwareAspectInstanceFactory>
 	private final Map<String, MetadataAwareAspectInstanceFactory> aspectFactoryCache = new ConcurrentHashMap<>();
 
 
@@ -89,31 +90,38 @@ public class BeanFactoryAspectJAdvisorsBuilder {
 				if (aspectNames == null) {
 					List<Advisor> advisors = new ArrayList<>();
 					aspectNames = new ArrayList<>();
+					//从容器中获取所有bean的名称
 					String[] beanNames = BeanFactoryUtils.beanNamesForTypeIncludingAncestors(
 							this.beanFactory, Object.class, true, false);
+					//遍历容器中的所有beanName
 					for (String beanName : beanNames) {
 						if (!isEligibleBean(beanName)) {
 							continue;
 						}
 						// We must be careful not to instantiate beans eagerly as in this case they
 						// would be cached by the Spring container but would not have been weaved.
+						//获取beanName对应的beanType
 						Class<?> beanType = this.beanFactory.getType(beanName);
 						if (beanType == null) {
 							continue;
 						}
+						//解析beanType是否包含@Aspect注解
 						if (this.advisorFactory.isAspect(beanType)) {
 							aspectNames.add(beanName);
 							AspectMetadata amd = new AspectMetadata(beanType, beanName);
 							if (amd.getAjType().getPerClause().getKind() == PerClauseKind.SINGLETON) {
 								MetadataAwareAspectInstanceFactory factory =
 										new BeanFactoryAspectInstanceFactory(this.beanFactory, beanName);
+								//获取通知器
 								List<Advisor> classAdvisors = this.advisorFactory.getAdvisors(factory);
+								//advisor是单例就缓存单例，若不是单例就缓存工厂
 								if (this.beanFactory.isSingleton(beanName)) {
 									this.advisorsCache.put(beanName, classAdvisors);
 								}
 								else {
 									this.aspectFactoryCache.put(beanName, factory);
 								}
+								//加入到advisor列表
 								advisors.addAll(classAdvisors);
 							}
 							else {

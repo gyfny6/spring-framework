@@ -25,6 +25,9 @@ import org.springframework.lang.Nullable;
  * @author Keith Donald
  * @author Phillip Webb
  * @since 3.0
+ * @desc 定义了两种接口
+ * 		①canConvert:是否可以完成转换
+ * 		②convert:进行类型转换
  */
 public interface ConversionService {
 
@@ -80,13 +83,18 @@ public interface ConversionService {
 	 * The TypeDescriptors provide additional context about the source and target locations
 	 * where conversion will occur, often object fields or property locations.
 	 * @param source the source object to convert (may be {@code null})
+	 *               要转换的原对象
 	 * @param sourceType context about the source type to convert from
+	 *                   原类型上下文
 	 * (may be {@code null} if source is {@code null})
 	 * @param targetType context about the target type to convert to (required)
+	 *                   目标类型的上下文
 	 * @return the converted object, an instance of {@link TypeDescriptor#getObjectType() targetType}
 	 * @throws ConversionException if a conversion exception occurred
 	 * @throws IllegalArgumentException if targetType is {@code null},
 	 * or {@code sourceType} is {@code null} but source is not {@code null}
+	 *
+	 * 一句话：将source从sourceType类型转换为targetType类型
 	 */
 	@Nullable
 	Object convert(@Nullable Object source, @Nullable TypeDescriptor sourceType, TypeDescriptor targetType);

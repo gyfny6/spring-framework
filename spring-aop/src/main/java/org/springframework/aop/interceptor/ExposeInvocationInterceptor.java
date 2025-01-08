@@ -81,18 +81,21 @@ public final class ExposeInvocationInterceptor implements MethodInterceptor, Pri
 
 	/**
 	 * Ensures that only the canonical instance can be created.
+	 * 构造方法私有化
 	 */
 	private ExposeInvocationInterceptor() {
 	}
 
+	//在ThreadLocal中记录正在被调用的MethodInvocation(正在执行的AOP方法)
 	@Override
 	public Object invoke(MethodInvocation mi) throws Throwable {
 		MethodInvocation oldInvocation = invocation.get();
+		//设置MethodInvocation到ThreadLocal中
 		invocation.set(mi);
 		try {
+			//调用下一个拦截器
 			return mi.proceed();
-		}
-		finally {
+		} finally {
 			invocation.set(oldInvocation);
 		}
 	}

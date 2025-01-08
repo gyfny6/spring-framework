@@ -27,6 +27,7 @@ import org.springframework.beans.factory.BeanDefinitionStoreException;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import selftest.BeanPostProcessorTest;
 import selftest.MyApplicationAware;
+import selftest.StudentService;
 
 import static org.junit.Assert.*;
 
@@ -37,12 +38,47 @@ import static org.junit.Assert.*;
 public class AopNamespaceHandlerAdviceTypeTests {
 
 	@Test
+	public void test03() {
+		ApplicationContext context = new ClassPathXmlApplicationContext(
+				"org/springframework/aop/config/converterSpring.xml");
+		StudentService bean = context.getBean(StudentService.class);
+		System.out.println(bean);
+	}
+
+	@Test
+	public void test02() {
+		System.out.println("==========开始==========");
+		ApplicationContext context = new ClassPathXmlApplicationContext(
+				"org/springframework/aop/config/spring.xml");
+
+		StudentService studentService = (StudentService) context.getBean("studentService");
+		System.out.println("student name:" + studentService.getName());
+		System.out.println("=======================");
+		StudentService student1 = (StudentService) context.getBean("student1");
+		System.out.println("student name:" + student1.getName());
+		System.out.println("==========结束==========");
+	}
+
+	@Test
+	public void test01() {
+		System.out.println("====================");
+		ApplicationContext context
+				= new ClassPathXmlApplicationContext("org/springframework/aop/config/spring.xml");
+
+		StudentService studentService
+				= (StudentService) context.getBean("studentService");
+		System.out.println("student name:" + studentService.getName() + "-- age:" + studentService.getAge());
+		System.out.println("====================");
+
+	}
+
+	@Test
 	public void test() {
 		System.out.println("====================");
 		//ApplicationContext applicationContext = new ClassPathXmlApplicationContext("org/springframework/aop/config/spring.xml");
 		//applicationContext.getBean(BeanPostProcessorTest.class);
 
-		ClassPathResource resource = new ClassPathResource("spring.xml",getClass());
+		ClassPathResource resource = new ClassPathResource("spring.xml", getClass());
 		DefaultListableBeanFactory factory = new DefaultListableBeanFactory();
 		XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(factory);
 
@@ -64,10 +100,9 @@ public class AopNamespaceHandlerAdviceTypeTests {
 	@Test
 	public void testParsingOfAdviceTypesWithError() {
 		try {
-		new ClassPathXmlApplicationContext(getClass().getSimpleName() + "-error.xml", getClass());
+			new ClassPathXmlApplicationContext(getClass().getSimpleName() + "-error.xml", getClass());
 			fail("Expected BeanDefinitionStoreException");
-		}
-		catch (BeanDefinitionStoreException ex) {
+		} catch (BeanDefinitionStoreException ex) {
 			assertTrue(ex.contains(SAXParseException.class));
 		}
 	}

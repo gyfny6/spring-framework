@@ -67,6 +67,8 @@ package org.springframework.core.env;
  * @see org.springframework.context.ConfigurableApplicationContext#getEnvironment
  * @see org.springframework.context.ConfigurableApplicationContext#setEnvironment
  * @see org.springframework.context.support.AbstractApplicationContext#createEnvironment
+ * @desc 当前程序正在运行的环境
+ * 		  确定哪哪些配置文件当前处于活动状态,以及默认情况下哪些配置文件应处于活动状态
  */
 public interface Environment extends PropertyResolver {
 
@@ -82,6 +84,7 @@ public interface Environment extends PropertyResolver {
 	 * @see #getDefaultProfiles
 	 * @see ConfigurableEnvironment#setActiveProfiles
 	 * @see AbstractEnvironment#ACTIVE_PROFILES_PROPERTY_NAME
+	 * 返回此环境下集合的配置文件集
 	 */
 	String[] getActiveProfiles();
 
@@ -91,6 +94,7 @@ public interface Environment extends PropertyResolver {
 	 * @see #getActiveProfiles
 	 * @see ConfigurableEnvironment#setDefaultProfiles
 	 * @see AbstractEnvironment#DEFAULT_PROFILES_PROPERTY_NAME
+	 * 获取默认的配置文件集
 	 */
 	String[] getDefaultProfiles();
 

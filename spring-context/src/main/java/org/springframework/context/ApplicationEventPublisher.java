@@ -37,6 +37,7 @@ public interface ApplicationEventPublisher {
 	 * (such as RequestHandledEvent) or application-specific events.
 	 * @param event the event to publish
 	 * @see org.springframework.web.context.support.RequestHandledEvent
+	 * 用于通知在此应用中注册的所有的监听器
 	 */
 	default void publishEvent(ApplicationEvent event) {
 		publishEvent((Object) event);

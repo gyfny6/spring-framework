@@ -72,7 +72,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	//单例bean的缓存,Map<beanName,bean instance>：这里存放的是完整的bean，如果这里面还有，就说明bean已经创建完成
 	//如果beanName对应的是FactoryBean，value是FactoryBean，FactoryBean创建的对象缓存到factoryBeanObjectCache中的
 	/** Cache of singleton objects: bean name to bean instance. */
-	//一级缓存：缓存已经实例化完成的bean
+	//一级缓存：缓存已经实例化完成的bean(如果是被aop增加的对象，缓存中存放的是增加之后的对象)
 	private final Map<String, Object> singletonObjects = new ConcurrentHashMap<>(256);
 	//缓存<beanName,创建bean的工厂(ObjectFactory)> -> 这个也是为了解决循环依赖
 	/** Cache of singleton factories: bean name to ObjectFactory. */
@@ -106,6 +106,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	/** Flag that indicates whether we're currently within destroySingletons. */
 	private boolean singletonsCurrentlyInDestruction = false;
 
+	//Map<beanName,Disposable bean(DisposableBeanAdapter)>
 	/** Disposable bean instances: bean name to disposable instance. */
 	private final Map<String, Object> disposableBeans = new LinkedHashMap<>();
 

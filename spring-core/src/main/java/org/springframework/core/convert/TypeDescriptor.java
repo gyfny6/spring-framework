@@ -132,6 +132,7 @@ public class TypeDescriptor implements Serializable {
 	 * normalize to object-based types and not work with primitive types directly.
 	 */
 	public Class<?> getObjectType() {
+		//int.class -> Integer.class Class<原始类型> -> Class<封装类型>
 		return ClassUtils.resolvePrimitiveIfNecessary(getType());
 	}
 
@@ -276,10 +277,13 @@ public class TypeDescriptor implements Serializable {
 	 * @see #getObjectType()
 	 */
 	public boolean isAssignableTo(TypeDescriptor typeDescriptor) {
+		//A.isAssignableFrom(B) -> A是否可以被B赋值 : A是B的父类 || A是B的接口 || A和B是同一个类
 		boolean typesAssignable = typeDescriptor.getObjectType().isAssignableFrom(getObjectType());
 		if (!typesAssignable) {
 			return false;
 		}
+
+		//集合类型的判断
 		if (isArray() && typeDescriptor.isArray()) {
 			return isNestedAssignable(getElementTypeDescriptor(), typeDescriptor.getElementTypeDescriptor());
 		}

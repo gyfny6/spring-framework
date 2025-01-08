@@ -30,6 +30,8 @@ import org.springframework.lang.Nullable;
  * @author Stephane Nicoll
  * @since 2.0
  * @see BeanWrapper
+ *
+ * 该接口集成了ConversionService
  */
 public interface ConfigurablePropertyAccessor extends PropertyAccessor, PropertyEditorRegistry, TypeConverter {
 

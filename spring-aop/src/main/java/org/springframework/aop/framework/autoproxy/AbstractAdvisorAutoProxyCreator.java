@@ -48,7 +48,7 @@ import org.springframework.util.Assert;
  */
 @SuppressWarnings("serial")
 public abstract class AbstractAdvisorAutoProxyCreator extends AbstractAutoProxyCreator {
-
+	//从bean容器中获取Advisor的帮助类
 	@Nullable
 	private BeanFactoryAdvisorRetrievalHelper advisorRetrievalHelper;
 
@@ -72,9 +72,9 @@ public abstract class AbstractAdvisorAutoProxyCreator extends AbstractAutoProxyC
 	@Nullable
 	protected Object[] getAdvicesAndAdvisorsForBean(
 			Class<?> beanClass, String beanName, @Nullable TargetSource targetSource) {
-
+		//给class需要合适的Advisor
 		List<Advisor> advisors = findEligibleAdvisors(beanClass, beanName);
-		if (advisors.isEmpty()) {
+		if (advisors.isEmpty()) {//
 			return DO_NOT_PROXY;
 		}
 		return advisors.toArray();
@@ -89,13 +89,17 @@ public abstract class AbstractAdvisorAutoProxyCreator extends AbstractAutoProxyC
 	 * @see #findCandidateAdvisors
 	 * @see #sortAdvisors
 	 * @see #extendAdvisors
+	 * 寻找合适的Advisor列表
 	 */
 	protected List<Advisor> findEligibleAdvisors(Class<?> beanClass, String beanName) {
+		//①拿到所有通知器(Advisor：通知器类似与切面，整合了切入点pointcut和通知advice)，配置文件中的<aop:before>和<aop:after>等
 		List<Advisor> candidateAdvisors = findCandidateAdvisors();
+		//②筛选可用在beanClass上的Advisor，通过ClassFilter和MethodMatcher对目标类和方法进行匹配
 		List<Advisor> eligibleAdvisors = findAdvisorsThatCanApply(candidateAdvisors, beanClass, beanName);
+		//③扩展advisor:向候选的Advisors链的开头加入DefaultPointcutAdvisor
 		extendAdvisors(eligibleAdvisors);
 		if (!eligibleAdvisors.isEmpty()) {
-			eligibleAdvisors = sortAdvisors(eligibleAdvisors);
+			eligibleAdvisors = sortAdvisors(eligibleAdvisors);//对通知(Advisor)进行排序
 		}
 		return eligibleAdvisors;
 	}

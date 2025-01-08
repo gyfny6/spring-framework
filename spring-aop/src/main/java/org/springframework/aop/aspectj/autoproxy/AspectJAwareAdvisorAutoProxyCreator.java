@@ -42,6 +42,10 @@ import org.springframework.util.ClassUtils;
  * @author Juergen Hoeller
  * @author Ramnivas Laddad
  * @since 2.0
+ * 实现了BeanPostProcessor,BeanPostProcessor的方法是在抽象父类AbstractAutoProxyCreator中实现的
+ * AbstractAutoProxyCreator.postProcessBeforeInitialization是一个空方法，代码逻辑在AbstractAutoProxyCreator.postProcessAfterInitialization实现的
+ *
+ * 在bean创建之后调用AbstractAutoProxyCreator.postProcessAfterInitialization()生成代理
  */
 @SuppressWarnings("serial")
 public class AspectJAwareAdvisorAutoProxyCreator extends AbstractAdvisorAutoProxyCreator {

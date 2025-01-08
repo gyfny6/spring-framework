@@ -60,6 +60,9 @@ public class SimpleInstantiationStrategy implements InstantiationStrategy {
 	}
 
 
+	/**
+	 * 默认构造方法实例化
+	 */
 	@Override
 	public Object instantiate(RootBeanDefinition bd, @Nullable String beanName, BeanFactory owner) {
 		// Don't override the class with CGLIB if no overrides.
@@ -110,6 +113,9 @@ public class SimpleInstantiationStrategy implements InstantiationStrategy {
 		throw new UnsupportedOperationException("Method Injection not supported in SimpleInstantiationStrategy");
 	}
 
+	/**
+	 * 使用指定构造方法进行实例化
+	 */
 	@Override
 	public Object instantiate(RootBeanDefinition bd, @Nullable String beanName, BeanFactory owner,
 			final Constructor<?> ctor, Object... args) {
@@ -123,7 +129,8 @@ public class SimpleInstantiationStrategy implements InstantiationStrategy {
 					return null;
 				});
 			}
-			return BeanUtils.instantiateClass(ctor, args);//反射：使用构造函数以及匹配好的参数实例化对象
+			//反射：使用构造函数以及匹配好的参数实例化对象
+			return BeanUtils.instantiateClass(ctor, args);
 		}
 		else {
 			//如果存在需要覆盖的方法或者动态替换的方法，则需要使用CGLIB进行动态代理
@@ -144,6 +151,9 @@ public class SimpleInstantiationStrategy implements InstantiationStrategy {
 		throw new UnsupportedOperationException("Method Injection not supported in SimpleInstantiationStrategy");
 	}
 
+	/**
+	 * 工厂方法,直接使用反射创建对象
+	 */
 	@Override
 	public Object instantiate(RootBeanDefinition bd, @Nullable String beanName, BeanFactory owner,
 			@Nullable Object factoryBean, final Method factoryMethod, Object... args) {

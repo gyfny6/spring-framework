@@ -62,14 +62,19 @@ final class StringToArrayConverter implements ConditionalGenericConverter {
 		if (source == null) {
 			return null;
 		}
+		//将逗号分割的字符串切割成数组
 		String string = (String) source;
 		String[] fields = StringUtils.commaDelimitedListToStringArray(string);
+		//获得目标TypeDescriptor对象
 		TypeDescriptor targetElementType = targetType.getElementTypeDescriptor();
 		Assert.state(targetElementType != null, "No target element type");
+		//按照分割出来的长度创建目标数组
 		Object target = Array.newInstance(targetElementType.getType(), fields.length);
 		for (int i = 0; i < fields.length; i++) {
 			String sourceElement = fields[i];
+			//将字符串转换为单元目标类型
 			Object targetElement = this.conversionService.convert(sourceElement.trim(), sourceType, targetElementType);
+			//设置到数组中
 			Array.set(target, i, targetElement);
 		}
 		return target;

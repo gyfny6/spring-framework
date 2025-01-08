@@ -9,6 +9,8 @@
 	<bean class="org.springframework.aop.aspectj.annotation.AnnotationAwareAspectJAutoProxyCreator"/>
 	-->
 
+	<!--该注解的作用就是注册AnnotationAwareAspectJAutoProxyCreator到容器中,beanName为org.springframework.aop.config.internalAutoProxyCreator-->
+	<!--AnnotationAwareAspectJAutoProxyCreator是BeanPostProcessor-->
 	<aop:aspectj-autoproxy/>
 
 	<bean class="org.springframework.aop.aspectj.autoproxy.MultiplyReturnValue">

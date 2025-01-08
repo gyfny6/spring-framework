@@ -70,7 +70,7 @@ public class AdvisedSupport extends ProxyConfig implements Advised {
 	 */
 	public static final TargetSource EMPTY_TARGET_SOURCE = EmptyTargetSource.INSTANCE;
 
-
+	//用于包装被代理对象(目标对象)
 	/** Package-protected to allow direct access for efficiency. */
 	TargetSource targetSource = EMPTY_TARGET_SOURCE;
 
@@ -79,7 +79,7 @@ public class AdvisedSupport extends ProxyConfig implements Advised {
 
 	/** The AdvisorChainFactory to use. */
 	AdvisorChainFactory advisorChainFactory = new DefaultAdvisorChainFactory();
-
+	//缓存方法的拦截器链Map<方法,List<MethodInterceptor>>
 	/** Cache with Method as key and advisor chain List as value. */
 	private transient Map<MethodCacheKey, List<Object>> methodCache;
 
@@ -92,6 +92,7 @@ public class AdvisedSupport extends ProxyConfig implements Advised {
 	/**
 	 * List of Advisors. If an Advice is added, it will be wrapped
 	 * in an Advisor before being added to this List.
+	 * 适合当前类的所有advisor
 	 */
 	private List<Advisor> advisors = new ArrayList<>();
 
@@ -478,10 +479,12 @@ public class AdvisedSupport extends ProxyConfig implements Advised {
 	 */
 	public List<Object> getInterceptorsAndDynamicInterceptionAdvice(Method method, @Nullable Class<?> targetClass) {
 		MethodCacheKey cacheKey = new MethodCacheKey(method);
+		//尝试使用key从缓存中获取当前方法的拦截器链
 		List<Object> cached = this.methodCache.get(cacheKey);
 		if (cached == null) {
-			cached = this.advisorChainFactory.getInterceptorsAndDynamicInterceptionAdvice(
-					this, method, targetClass);
+			//获取匹配的拦截器链List<MethodInterceptor>
+			cached = this.advisorChainFactory.getInterceptorsAndDynamicInterceptionAdvice(this, method, targetClass);
+			//将拦截器链缓存起来，下次就能直接使用
 			this.methodCache.put(cacheKey, cached);
 		}
 		return cached;

@@ -74,7 +74,8 @@ public class AspectJAutoProxyCreatorTests {
 
 	private static final Log factoryLog = LogFactory.getLog(DefaultListableBeanFactory.class);
 
-
+	//BeanPostProcessor
+	//AnnotationAwareAspectJAutoProxyCreator
 	@Test
 	public void testAspectsAreApplied() {
 		ClassPathXmlApplicationContext bf = newContext("aspects.xml");

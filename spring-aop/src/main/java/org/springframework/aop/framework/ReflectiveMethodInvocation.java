@@ -81,7 +81,7 @@ public class ReflectiveMethodInvocation implements ProxyMethodInvocation, Clonea
 
 	/**
 	 * List of MethodInterceptor and InterceptorAndDynamicMethodMatcher
-	 * that need dynamic checks.
+	 * that need dynamic checks. 拦截器链
 	 */
 	protected final List<?> interceptorsAndDynamicMethodMatchers;
 
@@ -104,6 +104,7 @@ public class ReflectiveMethodInvocation implements ProxyMethodInvocation, Clonea
 	 * MethodMatchers included in this struct must already have been found to have matched
 	 * as far as was possibly statically. Passing an array might be about 10% faster,
 	 * but would complicate the code. And it would work only for static pointcuts.
+	 * 反射方法调用
 	 */
 	protected ReflectiveMethodInvocation(
 			Object proxy, @Nullable Object target, Method method, @Nullable Object[] arguments,
@@ -154,12 +155,13 @@ public class ReflectiveMethodInvocation implements ProxyMethodInvocation, Clonea
 		this.arguments = arguments;
 	}
 
-
 	@Override
 	@Nullable
 	public Object proceed() throws Throwable {
 		//	We start with an index of -1 and increment early.
+		//拦截器链中的最后一个拦截器执行完后，即可执行目标方法
 		if (this.currentInterceptorIndex == this.interceptorsAndDynamicMethodMatchers.size() - 1) {
+			//执行目标方法
 			return invokeJoinpoint();
 		}
 
@@ -171,18 +173,21 @@ public class ReflectiveMethodInvocation implements ProxyMethodInvocation, Clonea
 			InterceptorAndDynamicMethodMatcher dm =
 					(InterceptorAndDynamicMethodMatcher) interceptorOrInterceptionAdvice;
 			Class<?> targetClass = (this.targetClass != null ? this.targetClass : this.method.getDeclaringClass());
+			//methodMatcher进行动态匹配
 			if (dm.methodMatcher.matches(this.method, targetClass, this.arguments)) {
+				//调用拦截器逻辑
 				return dm.interceptor.invoke(this);
-			}
-			else {
+			} else {
 				// Dynamic matching failed.
 				// Skip this interceptor and invoke the next in the chain.
+				//匹配失败则忽略当前的拦截器，继续执行
 				return proceed();
 			}
 		}
 		else {
 			// It's an interceptor, so we just invoke it: The pointcut will have
 			// been evaluated statically before this object was constructed.
+			//调用拦截器逻辑，并传递ReflectiveMethodInvocation对象
 			return ((MethodInterceptor) interceptorOrInterceptionAdvice).invoke(this);
 		}
 	}

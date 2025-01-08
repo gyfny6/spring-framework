@@ -97,6 +97,7 @@ public abstract class AbstractAspectJAdvice implements Advice, AspectJPrecedence
 
 	private final Class<?>[] parameterTypes;
 
+	//通知方法(标注了@Before注解的方法)
 	protected transient Method aspectJAdviceMethod;
 
 	private final AspectJExpressionPointcut pointcut;
@@ -641,6 +642,7 @@ public abstract class AbstractAspectJAdvice implements Advice, AspectJPrecedence
 		try {
 			ReflectionUtils.makeAccessible(this.aspectJAdviceMethod);
 			// TODO AopUtils.invokeJoinpointUsingReflection
+			//通过反射调用通知方法
 			return this.aspectJAdviceMethod.invoke(this.aspectInstanceFactory.getAspectInstance(), actualArgs);
 		}
 		catch (IllegalArgumentException ex) {

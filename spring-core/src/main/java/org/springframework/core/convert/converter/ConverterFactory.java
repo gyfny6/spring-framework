@@ -27,6 +27,7 @@ package org.springframework.core.convert.converter;
  * @param <R> the target range (or base) type converters created by this factory can convert to;
  * for example {@link Number} for a set of number subtypes.
  * @see ConditionalConverter
+ * @desc 转换器工厂 -> 返回一个Converter,其可以将S转换成R的子类
  */
 public interface ConverterFactory<S, R> {
 

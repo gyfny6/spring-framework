@@ -33,6 +33,7 @@ import org.springframework.util.StringUtils;
  *
  * @author Juergen Hoeller
  * @since 2.5.2
+ * @desc 只有注册表功能,没有工厂功能
  */
 public class SimpleBeanDefinitionRegistry extends SimpleAliasRegistry implements BeanDefinitionRegistry {
 

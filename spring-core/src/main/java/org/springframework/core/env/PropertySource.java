@@ -56,6 +56,7 @@ import org.springframework.util.ObjectUtils;
  * @see PropertySourcesPropertyResolver
  * @see MutablePropertySources
  * @see org.springframework.context.annotation.PropertySource
+ * @desc 存储key-value键值对
  */
 public abstract class PropertySource<T> {
 

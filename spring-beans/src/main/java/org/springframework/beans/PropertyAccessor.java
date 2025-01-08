@@ -77,6 +77,8 @@ public interface PropertyAccessor {
 	 * @param propertyName the property to check
 	 * (may be a nested path and/or an indexed/mapped property)
 	 * @return whether the property is readable
+	 *
+	 * 判断指定property是否可读,是否包含getter方法
 	 */
 	boolean isReadableProperty(String propertyName);
 
@@ -86,6 +88,7 @@ public interface PropertyAccessor {
 	 * @param propertyName the property to check
 	 * (may be a nested path and/or an indexed/mapped property)
 	 * @return whether the property is writable
+	 * 判断指定property是否可写,是否包含setter方法
 	 */
 	boolean isWritableProperty(String propertyName);
 
@@ -99,6 +102,7 @@ public interface PropertyAccessor {
 	 * or {@code null} if not determinable
 	 * @throws PropertyAccessException if the property was valid but the
 	 * accessor method failed
+	 * 获取propertyName对应属性的类型
 	 */
 	@Nullable
 	Class<?> getPropertyType(String propertyName) throws BeansException;
@@ -138,6 +142,7 @@ public interface PropertyAccessor {
 	 * if the property isn't writable
 	 * @throws PropertyAccessException if the property was valid but the
 	 * accessor method failed or a type mismatch occurred
+	 * 设置指定的PropertyValue
 	 */
 	void setPropertyValue(String propertyName, @Nullable Object value) throws BeansException;
 

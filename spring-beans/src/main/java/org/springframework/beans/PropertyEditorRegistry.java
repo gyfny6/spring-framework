@@ -33,6 +33,7 @@ import org.springframework.lang.Nullable;
  * @see PropertyEditorRegistrar
  * @see BeanWrapper
  * @see org.springframework.validation.DataBinder
+ * @desc 用于注册和发现PropertyEditor,PropertyEditor用来改变指定property属性的类型
  */
 public interface PropertyEditorRegistry {
 

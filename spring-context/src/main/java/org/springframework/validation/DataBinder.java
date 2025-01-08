@@ -105,6 +105,7 @@ import org.springframework.util.StringUtils;
  * @see DefaultMessageCodesResolver
  * @see DefaultBindingErrorProcessor
  * @see org.springframework.context.MessageSource
+ * @desc 主要用于参数绑定(SpringMVC)
  */
 public class DataBinder implements PropertyEditorRegistry, TypeConverter {
 

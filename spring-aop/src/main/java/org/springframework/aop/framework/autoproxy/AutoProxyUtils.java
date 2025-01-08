@@ -110,7 +110,7 @@ public abstract class AutoProxyUtils {
 	 */
 	static void exposeTargetClass(
 			ConfigurableListableBeanFactory beanFactory, @Nullable String beanName, Class<?> targetClass) {
-
+		//给BeanDefinition设置原始类型参数(org.springframework.aop.framework.autoproxy.AutoProxyUtils.originalTargetClass)
 		if (beanName != null && beanFactory.containsBeanDefinition(beanName)) {
 			beanFactory.getMergedBeanDefinition(beanName).setAttribute(ORIGINAL_TARGET_CLASS_ATTRIBUTE, targetClass);
 		}

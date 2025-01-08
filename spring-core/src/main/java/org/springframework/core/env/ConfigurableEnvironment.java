@@ -68,6 +68,7 @@ import java.util.Map;
  * @since 3.1
  * @see StandardEnvironment
  * @see org.springframework.context.ConfigurableApplicationContext#getEnvironment
+ * 提供了设置激活的profile和默认的profile的功能以及操作Properties的工具
  */
 public interface ConfigurableEnvironment extends Environment, ConfigurablePropertyResolver {
 
@@ -83,6 +84,7 @@ public interface ConfigurableEnvironment extends Environment, ConfigurableProper
 	 * @see #setDefaultProfiles
 	 * @see org.springframework.context.annotation.Profile
 	 * @see AbstractEnvironment#ACTIVE_PROFILES_PROPERTY_NAME
+	 * 设置profile集
 	 */
 	void setActiveProfiles(String... profiles);
 
@@ -90,6 +92,7 @@ public interface ConfigurableEnvironment extends Environment, ConfigurableProper
 	 * Add a profile to the current set of active profiles.
 	 * @throws IllegalArgumentException if the profile is null, empty or whitespace-only
 	 * @see #setActiveProfiles
+	 * 设置激活的profile
 	 */
 	void addActiveProfile(String profile);
 
@@ -98,6 +101,7 @@ public interface ConfigurableEnvironment extends Environment, ConfigurableProper
 	 * are explicitly made active through {@link #setActiveProfiles}.
 	 * @throws IllegalArgumentException if any profile is null, empty or whitespace-only
 	 * @see AbstractEnvironment#DEFAULT_PROFILES_PROPERTY_NAME
+	 * 设置默认的profile集
 	 */
 	void setDefaultProfiles(String... profiles);
 
@@ -115,6 +119,7 @@ public interface ConfigurableEnvironment extends Environment, ConfigurableProper
 	 * sources such as the set of system properties or the set of system environment
 	 * variables.
 	 * @see AbstractEnvironment#customizePropertySources
+	 * 获取PropertySource
 	 */
 	MutablePropertySources getPropertySources();
 
@@ -130,6 +135,7 @@ public interface ConfigurableEnvironment extends Environment, ConfigurableProper
 	 * {@link IllegalAccessException}; in cases where the SecurityManager forbids access
 	 * to a property, {@code null} will be returned and an INFO-level log message will be
 	 * issued noting the exception.
+	 * 获取System.getProperties(),
 	 */
 	Map<String, Object> getSystemProperties();
 
@@ -145,6 +151,7 @@ public interface ConfigurableEnvironment extends Environment, ConfigurableProper
 	 * {@link IllegalAccessException}; in cases where the SecurityManager forbids access
 	 * to a property, {@code null} will be returned and an INFO-level log message will be
 	 * issued noting the exception.
+	 * 获取System.getenv()
 	 */
 	Map<String, Object> getSystemEnvironment();
 

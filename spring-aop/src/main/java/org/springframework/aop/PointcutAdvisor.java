@@ -27,6 +27,7 @@ public interface PointcutAdvisor extends Advisor {
 
 	/**
 	 * Get the Pointcut that drives this advisor.
+	 * 切入点
 	 */
 	Pointcut getPointcut();
 

@@ -103,14 +103,14 @@ public abstract class AopConfigUtils {
 	public static void forceAutoProxyCreatorToUseClassProxying(BeanDefinitionRegistry registry) {
 		if (registry.containsBeanDefinition(AUTO_PROXY_CREATOR_BEAN_NAME)) {
 			BeanDefinition definition = registry.getBeanDefinition(AUTO_PROXY_CREATOR_BEAN_NAME);
-			definition.getPropertyValues().add("proxyTargetClass", Boolean.TRUE);
+			definition.getPropertyValues().add("proxyTargetClass", Boolean.TRUE);//使用CGLIB进行代理
 		}
 	}
 
 	public static void forceAutoProxyCreatorToExposeProxy(BeanDefinitionRegistry registry) {
 		if (registry.containsBeanDefinition(AUTO_PROXY_CREATOR_BEAN_NAME)) {
 			BeanDefinition definition = registry.getBeanDefinition(AUTO_PROXY_CREATOR_BEAN_NAME);
-			definition.getPropertyValues().add("exposeProxy", Boolean.TRUE);
+			definition.getPropertyValues().add("exposeProxy", Boolean.TRUE);//标志暴露最终的代理
 		}
 	}
 

@@ -141,9 +141,12 @@ class TypeConverterDelegate {
 	 * @param propertyName name of the property
 	 * @param oldValue the previous value, if available (may be {@code null})
 	 * @param newValue the proposed new value
+	 *                 待被转换的值
 	 * @param requiredType the type we must convert to
+	 *                     目标类型
 	 * (or {@code null} if not known, for example in case of a collection element)
 	 * @param typeDescriptor the descriptor for the target property or field
+	 *                       目标属性的描述
 	 * @return the new value, possibly the result of type conversion
 	 * @throws IllegalArgumentException if type conversion failed
 	 */
@@ -153,12 +156,14 @@ class TypeConverterDelegate {
 			@Nullable Class<T> requiredType, @Nullable TypeDescriptor typeDescriptor) throws IllegalArgumentException {
 
 		// Custom editor for this type?
+		//find自定义PropertyEditor
 		PropertyEditor editor = this.propertyEditorRegistry.findCustomEditor(requiredType, propertyName);
 
 		ConversionFailedException conversionAttemptEx = null;
 
 		// No custom editor but custom ConversionService specified?
 		ConversionService conversionService = this.propertyEditorRegistry.getConversionService();
+		//如果没有自定义的PropertyEditor，则使用ConversionService
 		if (editor == null && conversionService != null && newValue != null && typeDescriptor != null) {
 			TypeDescriptor sourceTypeDesc = TypeDescriptor.forObject(newValue);
 			if (conversionService.canConvert(sourceTypeDesc, typeDescriptor)) {

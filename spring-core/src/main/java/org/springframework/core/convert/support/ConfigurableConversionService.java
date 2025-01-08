@@ -33,6 +33,9 @@ import org.springframework.core.convert.converter.ConverterRegistry;
  * @see org.springframework.core.env.ConfigurablePropertyResolver#getConversionService()
  * @see org.springframework.core.env.ConfigurableEnvironment
  * @see org.springframework.context.ConfigurableApplicationContext#getEnvironment()
+ * @desc ConversionService的配置接口，继承了ConversionService和ConverterRegistry，用于合并它两的操作。
+ * 			方便通过add和remove的方式添加和删除转换器
+ * 		ConverterRegistry提供可配置,	ConversionService提供转换功能
  */
 public interface ConfigurableConversionService extends ConversionService, ConverterRegistry {
 

@@ -1,9 +1,23 @@
 package selftest;
 
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 
-public class BeanPostProcessorTest implements BeanPostProcessor {
+public class BeanPostProcessorTest implements BeanPostProcessor, InitializingBean {
+
+	private String name;
+
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		System.out.println("InitializingBeanTest initializing...");
+		this.name = "chenssy 2 号";
+	}
+
+	public void setOtherName(){
+		System.out.println("InitializingBeanTest setOtherName...");
+		this.name = "chenssy 3 号";
+	}
 
 	@Override
 	public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {

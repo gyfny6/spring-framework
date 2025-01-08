@@ -31,6 +31,7 @@ import org.springframework.util.Assert;
  * @author Juergen Hoeller
  * @since 3.2
  * @see SimpleTypeConverter
+ * @desc TypeConverter的基本实现，该类是委托给TypeConverterDelegate进行处理
  */
 public abstract class TypeConverterSupport extends PropertyEditorRegistrySupport implements TypeConverter {
 

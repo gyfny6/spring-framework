@@ -112,6 +112,7 @@ import org.springframework.util.StringUtils;
  * @see #addBeanPostProcessor
  * @see #getBean
  * @see #resolveDependency
+ * @desc 相较于SimpleBeanDefinitionRegistry,DefaultListableBeanFactory是一个完整工厂
  */
 @SuppressWarnings("serial")
 public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFactory
@@ -155,7 +156,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	//从依赖类型映射到相应的对象
 	/** Map from dependency type to corresponding autowired value. */
 	private final Map<Class<?>, Object> resolvableDependencies = new ConcurrentHashMap<>(16);
-	//存放Bean定义信息
+	//注册表:存放Bean定义信息
 	/** Map of bean definition objects, keyed by bean name. */
 	private final Map<String, BeanDefinition> beanDefinitionMap = new ConcurrentHashMap<>(256);
 
@@ -225,6 +226,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	 * If not, an exception will be thrown. This also applies to overriding aliases.
 	 * <p>Default is "true".
 	 * @see #registerBeanDefinition
+	 * 是否允许相同的beanName重新定义
 	 */
 	public void setAllowBeanDefinitionOverriding(boolean allowBeanDefinitionOverriding) {
 		this.allowBeanDefinitionOverriding = allowBeanDefinitionOverriding;
@@ -939,6 +941,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 				}
 			}
 			else {
+				//如果是在启动注册阶段,就不需要进行并发控制
 				// Still in startup registration phase
 				this.beanDefinitionMap.put(beanName, beanDefinition);//添加beanDefinition
 				this.beanDefinitionNames.add(beanName);//添加beanName到beanDefinitionNames
@@ -964,6 +967,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 			throw new NoSuchBeanDefinitionException(beanName);
 		}
 
+		//同样是:如果已经进入bean的创建阶段,进行并发控制
 		if (hasBeanCreationStarted()) {
 			// Cannot modify startup-time collection elements anymore (for stable iteration)
 			synchronized (this.beanDefinitionMap) {

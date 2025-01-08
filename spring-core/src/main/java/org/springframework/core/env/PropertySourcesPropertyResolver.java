@@ -31,6 +31,9 @@ import org.springframework.lang.Nullable;
  */
 public class PropertySourcesPropertyResolver extends AbstractPropertyResolver {
 
+	/**
+	 * 存储着PropertySource
+	 */
 	@Nullable
 	private final PropertySources propertySources;
 
@@ -74,20 +77,32 @@ public class PropertySourcesPropertyResolver extends AbstractPropertyResolver {
 		return getProperty(key, String.class, false);
 	}
 
+	/**
+	 *
+	 * @param key	获取的key
+	 * @param targetValueType	目标value的类型
+	 * @param resolveNestedPlaceholders		是否解决嵌套占位符
+	 * @return
+	 * @param <T>
+	 */
 	@Nullable
 	protected <T> T getProperty(String key, Class<T> targetValueType, boolean resolveNestedPlaceholders) {
 		if (this.propertySources != null) {
+			//遍历PropertySource
 			for (PropertySource<?> propertySource : this.propertySources) {
 				if (logger.isTraceEnabled()) {
 					logger.trace("Searching for key '" + key + "' in PropertySource '" +
 							propertySource.getName() + "'");
 				}
+				//获取key对应的value值
 				Object value = propertySource.getProperty(key);
 				if (value != null) {
+					//如果需要,解析嵌套占位符
 					if (resolveNestedPlaceholders && value instanceof String) {
 						value = resolveNestedPlaceholders((String) value);
 					}
 					logKeyFound(key, propertySource, value);
+					//value的类型转换
 					return convertValueIfNecessary(value, targetValueType);
 				}
 			}

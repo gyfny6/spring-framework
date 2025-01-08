@@ -23,6 +23,7 @@ import java.util.List;
 import org.aopalliance.aop.Advice;
 import org.aopalliance.intercept.MethodInterceptor;
 
+import org.aspectj.lang.annotation.After;
 import org.springframework.aop.Advisor;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
 
@@ -79,11 +80,14 @@ public class DefaultAdvisorAdapterRegistry implements AdvisorAdapterRegistry, Se
 	public MethodInterceptor[] getInterceptors(Advisor advisor) throws UnknownAdviceTypeException {
 		List<MethodInterceptor> interceptors = new ArrayList<>(3);
 		Advice advice = advisor.getAdvice();
+		//advice是MethodInterceptor，则直接使用。比如AspectJAfterAdvice就实现了MethodInterceptor接口
 		if (advice instanceof MethodInterceptor) {
 			interceptors.add((MethodInterceptor) advice);
 		}
+		//对于AspectJMethodBeforeAdvice等类型的通知，由于没有实现MethodInterceptor接口，所以需要通过适配器进行转换
 		for (AdvisorAdapter adapter : this.adapters) {
-			if (adapter.supportsAdvice(advice)) {
+			if (adapter.supportsAdvice(advice)) {//适配器模式：将Advisor适配为MethodInterceptor
+				//@Before，@AfterReturning，@AfterThrowing都需要适配器
 				interceptors.add(adapter.getInterceptor(advisor));
 			}
 		}

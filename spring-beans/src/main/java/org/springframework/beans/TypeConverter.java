@@ -62,6 +62,7 @@ public interface TypeConverter {
 	 * (or {@code null} if not known, for example in case of a collection element)
 	 * @param methodParam the method parameter that is the target of the conversion
 	 * (for analysis of generic types; may be {@code null})
+	 *                    属性的set方法
 	 * @return the new value, possibly the result of type conversion
 	 * @throws TypeMismatchException if type conversion failed
 	 * @see java.beans.PropertyEditor#setAsText(String)

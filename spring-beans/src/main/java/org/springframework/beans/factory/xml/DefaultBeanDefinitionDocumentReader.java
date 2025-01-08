@@ -184,10 +184,11 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 					//节点使用默认命名空间,使用默认解析
 					//<bean id="txCheckingInterceptor">
 					if (delegate.isDefaultNamespace(ele)) {
+						//比如<bean>标签
 						parseDefaultElement(ele, delegate);//解析默认标签
 					}
 					else {//否咋使用自定义解析
-						//比如:<tx:annotation-driven>,比如自己写的<myTag:user>
+						//比如:<tx:annotation-driven>,<aop:config>比如自己写的<myTag:user>
 						delegate.parseCustomElement(ele);//解析自定义标签
 					}
 				}

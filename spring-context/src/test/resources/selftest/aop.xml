@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+	<bean id="daoImpl" class="selftest.aop.DaoImpl" />
+	<bean id="timeHandler" class="selftest.aop.TimeHandler" />
+
+	<!--开启@Aspect代理，也可以使用@EnableAspectJAutoProxy开启-->
+	<!--<aop:aspectj-autoproxy expose-proxy="true"/>-->
+
+	<!--
+		默认proxy-target-class为false：
+			当bean实现了接口时，Spring会基于JDK动态代理为目标bean创建代理对象。
+			若未实现任何接口，Spring会通过CGLIB创建代理。
+		proxy-target-class为true：
+			会前置Spring通过CGLIB创建代理
+	-->
+	<!--
+		proxy-target-class=true 指定使用Cglib动态代理生成aop代理对象
+		否则默认使用JDK动态代理，被代理对象没有实现接口才使用Cglib代理
+	-->
+	<aop:config expose-proxy="true">
+		<aop:aspect id="time" ref="timeHandler">
+			<!--切入点表达式-->
+			<aop:pointcut id="addAllMethod" expression="execution(* selftest.aop.Dao.*(..))" />
+			<!--前置通知-->
+			<aop:before method="printTime" pointcut-ref="addAllMethod" />
+			<!--后置通知-->
+			<aop:after method="printTime" pointcut-ref="addAllMethod" />
+		</aop:aspect>
+	</aop:config>
+
+</beans>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+
+<beans>
+	<bean id="studentConversionService"
+		  class="selftest.StudentConversionService"/>
+
+	<bean id="conversionService"
+		  class="org.springframework.context.support.ConversionServiceFactoryBean">
+		<property name="converters">
+			<set>
+				<ref bean="studentConversionService"/>
+			</set>
+		</property>
+	</bean>
+
+	<bean id="student" class="selftest.StudentService">
+		<property name="studentService" value="18#chenssy"/>
+	</bean>
+
+</beans>

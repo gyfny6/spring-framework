@@ -171,13 +171,14 @@ public class AspectJExpressionPointcut extends AbstractExpressionPointcut
 		this.beanFactory = beanFactory;
 	}
 
-
+	//类型的匹配
 	@Override
 	public ClassFilter getClassFilter() {
 		obtainPointcutExpression();
 		return this;
 	}
 
+	//方法的匹配
 	@Override
 	public MethodMatcher getMethodMatcher() {
 		obtainPointcutExpression();

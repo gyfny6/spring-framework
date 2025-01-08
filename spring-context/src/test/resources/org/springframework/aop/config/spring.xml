@@ -3,6 +3,40 @@
 
 <beans>
 
-	<bean  class="selftest.BeanPostProcessorTest"/>
+	<!--<bean  class="selftest.BeanPostProcessorTest" init-method="setOtherName"/>-->
+	<!--<bean id="studentService" class="selftest.StudentService">-->
+	<!--	<property name="name" value="chenssy"/>-->
+	<!--	<property name="age" value="10"/>-->
+	<!--</bean>-->
 
+	<!--<bean class="selftest.BeanFactoryPostProcessor1"/>-->
+	<!--<bean class="selftest.BeanFactoryPostProcessor2"/>-->
+
+	<bean id="PropertyPlaceholderConfigurer"
+		  class="selftest.CustomPropertyConfig">
+		<property name="locations">
+			<list>
+				<value>classpath:selftest/application-dev.properties</value>
+				<value>classpath:selftest/application-test.properties</value>
+				<value>classpath:selftest/application-prod.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="studentService" class="selftest.StudentService">
+		<!--占位符,匹配配置文件中的student.name-->
+		<property name="name" value="${student.name}"/>
+	</bean>
+
+	<bean class="org.springframework.beans.factory.config.PropertyOverrideConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:selftest/application.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="student1" class="selftest.StudentService">
+		<property name="name" value="chenssy"/>
+	</bean>
 </beans>

@@ -173,11 +173,14 @@ public class MutablePropertyValues implements PropertyValues, Serializable {
 		for (int i = 0; i < this.propertyValueList.size(); i++) {
 			PropertyValue currentPv = this.propertyValueList.get(i);
 			if (currentPv.getName().equals(pv.getName())) {
+				//合并属性
 				pv = mergeIfRequired(pv, currentPv);
+				//替换属性
 				setPropertyValueAt(pv, i);
 				return this;
 			}
 		}
+		//添加属性
 		this.propertyValueList.add(pv);
 		return this;
 	}

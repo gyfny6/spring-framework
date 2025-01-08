@@ -118,7 +118,7 @@ public class DefaultNamespaceHandlerResolver implements NamespaceHandlerResolver
 	@Override
 	@Nullable
 	public NamespaceHandler resolve(String namespaceUri) {
-		//获取hander映射
+		//获取hander映射，一开始是<namespaceUri,handlerClassNameString>,后面会初始化为<namespaceUri,handler对象>
 		Map<String, Object> handlerMappings = getHandlerMappings();
 		//根据namespaceUri获取NamespaceHandler
 		Object handlerOrClassName = handlerMappings.get(namespaceUri);

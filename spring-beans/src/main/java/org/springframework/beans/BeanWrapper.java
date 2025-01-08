@@ -45,6 +45,7 @@ import java.beans.PropertyDescriptor;
  * @see org.springframework.beans.factory.BeanFactory
  * @see org.springframework.validation.BeanPropertyBindingResult
  * @see org.springframework.validation.DataBinder#initBeanPropertyAccess()
+ * @desc BeanWrapper继承了 PropertyAccessor(属性编辑器) PropertyEditorRegistry(属性编辑器注册器) TypeConverter(属性转换器)
  */
 public interface BeanWrapper extends ConfigurablePropertyAccessor {
 
@@ -63,11 +64,13 @@ public interface BeanWrapper extends ConfigurablePropertyAccessor {
 
 	/**
 	 * Return the bean instance wrapped by this object.
+	 * 获取包装对象的实例
 	 */
 	Object getWrappedInstance();
 
 	/**
 	 * Return the type of the wrapped bean instance.
+	 * 获取包装对象的类型
 	 */
 	Class<?> getWrappedClass();
 
@@ -75,6 +78,7 @@ public interface BeanWrapper extends ConfigurablePropertyAccessor {
 	 * Obtain the PropertyDescriptors for the wrapped object
 	 * (as determined by standard JavaBeans introspection).
 	 * @return the PropertyDescriptors for the wrapped object
+	 * 获取包装对象所有属性的PropertyDescriptors(属性上下文)
 	 */
 	PropertyDescriptor[] getPropertyDescriptors();
 
@@ -85,6 +89,7 @@ public interface BeanWrapper extends ConfigurablePropertyAccessor {
 	 * (may be a nested path, but no indexed/mapped property)
 	 * @return the property descriptor for the specified property
 	 * @throws InvalidPropertyException if there is no such property
+	 * 获取包装对象指定属性的上下文
 	 */
 	PropertyDescriptor getPropertyDescriptor(String propertyName) throws InvalidPropertyException;
 

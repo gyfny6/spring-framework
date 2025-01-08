@@ -51,6 +51,7 @@ import org.springframework.util.StringUtils;
  * @since 3.1
  * @see ConfigurableEnvironment
  * @see StandardEnvironment
+ * 允许通过spring.profiles.active和spring.profiles.default设置配置文件
  */
 public abstract class AbstractEnvironment implements ConfigurableEnvironment {
 
@@ -105,7 +106,7 @@ public abstract class AbstractEnvironment implements ConfigurableEnvironment {
 	//激活的配置文件(高优先级) -> 对应配置spring.profiles.active
 	private final Set<String> activeProfiles = new LinkedHashSet<>();
 	//默认激活的配置文件(低优先级) -> 对应配置spring.profiles.default -> 如果没设置则是default
-	private final Set<String> defaultProfiles = new LinkedHashSet<>(getReservedDefaultProfiles());
+	private final Set<String> defaultProfiles = new LinkedHashSet<>(getReservedDefaultProfiles());//默认是default
 
 	private final MutablePropertySources propertySources = new MutablePropertySources();
 
@@ -121,6 +122,7 @@ public abstract class AbstractEnvironment implements ConfigurableEnvironment {
 	 * @see #customizePropertySources(MutablePropertySources)
 	 */
 	public AbstractEnvironment() {
+		//子类通过该钩子方法,给MutablePropertySources中添加PropertySource
 		customizePropertySources(this.propertySources);
 	}
 
@@ -234,6 +236,7 @@ public abstract class AbstractEnvironment implements ConfigurableEnvironment {
 	 */
 	protected Set<String> doGetActiveProfiles() {
 		synchronized (this.activeProfiles) {
+			//激活的配置文件为空,从PropertySources中获取spring.profiles.active对应的值
 			if (this.activeProfiles.isEmpty()) {
 				//spring.profiles.active -> 激活的配置文件
 				String profiles = getProperty(ACTIVE_PROFILES_PROPERTY_NAME);
@@ -253,9 +256,12 @@ public abstract class AbstractEnvironment implements ConfigurableEnvironment {
 			logger.debug("Activating profiles " + Arrays.asList(profiles));
 		}
 		synchronized (this.activeProfiles) {
+			//清空activeProfiles
 			this.activeProfiles.clear();
 			for (String profile : profiles) {
+				//校验
 				validateProfile(profile);
+				//添加
 				this.activeProfiles.add(profile);
 			}
 		}

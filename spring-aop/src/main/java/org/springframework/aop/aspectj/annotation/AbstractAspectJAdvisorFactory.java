@@ -74,6 +74,7 @@ public abstract class AbstractAspectJAdvisorFactory implements AspectJAdvisorFac
 	 * if it has the @Aspect annotation, and was not compiled by ajc. The reason for this latter test
 	 * is that aspects written in the code-style (AspectJ language) also have the annotation present
 	 * when compiled by ajc with the -1.5 flag, yet they cannot be consumed by Spring AOP.
+	 * 是否是切面:类上标注了@Aspect注解 and 类不存在以ajc$开头的属性名
 	 */
 	@Override
 	public boolean isAspect(Class<?> clazz) {
@@ -130,7 +131,9 @@ public abstract class AbstractAspectJAdvisorFactory implements AspectJAdvisorFac
 	@SuppressWarnings("unchecked")
 	@Nullable
 	protected static AspectJAnnotation<?> findAspectJAnnotationOnMethod(Method method) {
+		//寻找Pointcut.class, Around.class, Before.class, After.class, AfterReturning.class, AfterThrowing.class注解
 		for (Class<?> clazz : ASPECTJ_ANNOTATION_CLASSES) {
+			//查找注解
 			AspectJAnnotation<?> foundAnnotation = findAnnotation(method, (Class<Annotation>) clazz);
 			if (foundAnnotation != null) {
 				return foundAnnotation;

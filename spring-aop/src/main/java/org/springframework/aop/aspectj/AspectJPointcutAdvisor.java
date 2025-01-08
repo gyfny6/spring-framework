@@ -71,7 +71,7 @@ public class AspectJPointcutAdvisor implements PointcutAdvisor, Ordered {
 	public boolean isPerInstance() {
 		return true;
 	}
-
+	//通知
 	@Override
 	public Advice getAdvice() {
 		return this.advice;

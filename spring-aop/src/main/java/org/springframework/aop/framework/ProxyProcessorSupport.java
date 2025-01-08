@@ -118,6 +118,7 @@ public class ProxyProcessorSupport extends ProxyConfig implements Ordered, BeanC
 			}
 		}
 		else {
+			//使用cglib动态代理
 			proxyFactory.setProxyTargetClass(true);
 		}
 	}
@@ -129,6 +130,7 @@ public class ProxyProcessorSupport extends ProxyConfig implements Ordered, BeanC
 	 * proxied with its full target class, assuming that as the user's intention.
 	 * @param ifc the interface to check
 	 * @return whether the given interface is just a container callback
+	 * 是否是回调接口
 	 */
 	protected boolean isConfigurationCallbackInterface(Class<?> ifc) {
 		return (InitializingBean.class == ifc || DisposableBean.class == ifc || Closeable.class == ifc ||
@@ -142,6 +144,7 @@ public class ProxyProcessorSupport extends ProxyConfig implements Ordered, BeanC
 	 * proxied with its full target class, assuming that as the user's intention.
 	 * @param ifc the interface to check
 	 * @return whether the given interface is an internal language interface
+	 * 是否是内部语言接口，这些接口不应被视为合理的代理接口
 	 */
 	protected boolean isInternalLanguageInterface(Class<?> ifc) {
 		return (ifc.getName().equals("groovy.lang.GroovyObject") ||

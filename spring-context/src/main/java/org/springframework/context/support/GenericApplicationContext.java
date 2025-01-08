@@ -319,12 +319,13 @@ public class GenericApplicationContext extends AbstractApplicationContext implem
 	@Override
 	public void registerBeanDefinition(String beanName, BeanDefinition beanDefinition)
 			throws BeanDefinitionStoreException {
-
+		//委托给DefaultListableBeanFactory实现beanDefinition的注册
 		this.beanFactory.registerBeanDefinition(beanName, beanDefinition);
 	}
 
 	@Override
 	public void removeBeanDefinition(String beanName) throws NoSuchBeanDefinitionException {
+		//委托给DefaultListableBeanFactory实现beanDefinition的移除
 		this.beanFactory.removeBeanDefinition(beanName);
 	}
 

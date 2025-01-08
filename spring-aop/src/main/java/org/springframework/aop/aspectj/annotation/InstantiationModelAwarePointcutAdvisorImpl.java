@@ -47,7 +47,7 @@ final class InstantiationModelAwarePointcutAdvisorImpl
 
 	private static final Advice EMPTY_ADVICE = new Advice() {};
 
-
+	//切入点:负责选择连接点(方法)
 	private final AspectJExpressionPointcut declaredPointcut;
 
 	private final Class<?> declaringClass;
@@ -110,6 +110,8 @@ final class InstantiationModelAwarePointcutAdvisorImpl
 			// A singleton aspect.
 			this.pointcut = this.declaredPointcut;
 			this.lazy = false;
+			//⑤按照注解解析advice(advisor(通知器)是advice(通知)的持有者)
+			//通知：在什么时候(方法调用之前还是之后)进行怎么样的增强
 			this.instantiatedAdvice = instantiateAdvice(this.declaredPointcut);
 		}
 	}
@@ -146,6 +148,7 @@ final class InstantiationModelAwarePointcutAdvisorImpl
 	}
 
 	private Advice instantiateAdvice(AspectJExpressionPointcut pointcut) {
+		//⑥根据注解类型创建相应的通知(在什么时候进行怎样的增强)
 		Advice advice = this.aspectJAdvisorFactory.getAdvice(this.aspectJAdviceMethod, pointcut,
 				this.aspectInstanceFactory, this.declarationOrder, this.aspectName);
 		return (advice != null ? advice : EMPTY_ADVICE);

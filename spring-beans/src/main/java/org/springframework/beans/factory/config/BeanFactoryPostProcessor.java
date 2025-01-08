@@ -46,6 +46,9 @@ import org.springframework.beans.BeansException;
 public interface BeanFactoryPostProcessor {
 
 	/**
+	 * 容器扩展机制：BeanFactoryPostProcessor。该机制作用于容器启动阶段，允许我们在容器实例化bean之前对注册到该容器的beanDefinition进行额外的操作。
+	 * 比如更改某些bean的一些属性。
+	 * 调用时机：容器启动阶段，BeanDefinition加载完成之后，Bean实例化之前。主要作用是修改已经加载的BeanDefinition
 	 * Modify the application context's internal bean factory after its standard
 	 * initialization. All bean definitions will have been loaded, but no beans
 	 * will have been instantiated yet. This allows for overriding or adding
