@@ -148,6 +148,7 @@ public class CustomEditorConfigurer implements BeanFactoryPostProcessor, Ordered
 			}
 		}
 		if (this.customEditors != null) {
+			//将PropertyEditor注册到(Map<Class<?>, Class<? extends PropertyEditor>>)AbstractBeanFactory.customEditors
 			this.customEditors.forEach(beanFactory::registerCustomEditor);
 		}
 	}

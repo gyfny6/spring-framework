@@ -232,6 +232,10 @@ public class DataSourceTransactionManager extends AbstractPlatformTransactionMan
 		return obtainDataSource();
 	}
 
+	/**
+	 * 获取事务
+	 * @return
+	 */
 	@Override
 	protected Object doGetTransaction() {
 		DataSourceTransactionObject txObject = new DataSourceTransactionObject();
@@ -259,6 +263,7 @@ public class DataSourceTransactionManager extends AbstractPlatformTransactionMan
 		try {
 			if (!txObject.hasConnectionHolder() ||
 					txObject.getConnectionHolder().isSynchronizedWithTransaction()) {
+				//如果transaction object没有绑定connection，从datasource中获取connection
 				Connection newCon = obtainDataSource().getConnection();
 				if (logger.isDebugEnabled()) {
 					logger.debug("Acquired Connection [" + newCon + "] for JDBC transaction");
@@ -275,6 +280,7 @@ public class DataSourceTransactionManager extends AbstractPlatformTransactionMan
 			// Switch to manual commit if necessary. This is very expensive in some JDBC drivers,
 			// so we don't want to do it unnecessarily (for example if we've explicitly
 			// configured the connection pool to set it already).
+			//将自动提交置为false
 			if (con.getAutoCommit()) {
 				txObject.setMustRestoreAutoCommit(true);
 				if (logger.isDebugEnabled()) {
@@ -293,6 +299,7 @@ public class DataSourceTransactionManager extends AbstractPlatformTransactionMan
 
 			// Bind the connection holder to the thread.
 			if (txObject.isNewConnectionHolder()) {
+				//如果是新connection，将connection绑定到TransactionSynchronizationManager
 				TransactionSynchronizationManager.bindResource(obtainDataSource(), txObject.getConnectionHolder());
 			}
 		}
@@ -364,6 +371,7 @@ public class DataSourceTransactionManager extends AbstractPlatformTransactionMan
 
 		// Remove the connection holder from the thread, if exposed.
 		if (txObject.isNewConnectionHolder()) {
+			//解除对dataSource对应资源的绑定
 			TransactionSynchronizationManager.unbindResource(obtainDataSource());
 		}
 
@@ -383,6 +391,7 @@ public class DataSourceTransactionManager extends AbstractPlatformTransactionMan
 			if (logger.isDebugEnabled()) {
 				logger.debug("Releasing JDBC Connection [" + con + "] after transaction");
 			}
+			//释放连接
 			DataSourceUtils.releaseConnection(con, this.dataSource);
 		}
 

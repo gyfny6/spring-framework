@@ -209,6 +209,7 @@ public abstract class DataSourceUtils {
 	}
 
 	/**
+	 * 在事务之后重置connection
 	 * Reset the given Connection after a transaction,
 	 * regarding read-only flag and isolation level.
 	 * @param con the Connection to reset

@@ -1198,6 +1198,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	 * instances, and for SimpleTypeConverter used for constructor argument
 	 * and factory method type conversion.
 	 * @param registry the PropertyEditorRegistry to initialize
+	 * @desc 把BeanFactory中注册的PropertyEditor给PropertyEditorRegistry一份
 	 */
 	protected void registerCustomEditors(PropertyEditorRegistry registry) {
 		PropertyEditorRegistrySupport registrySupport =

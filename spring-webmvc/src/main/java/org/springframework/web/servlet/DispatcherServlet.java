@@ -500,9 +500,11 @@ public class DispatcherServlet extends FrameworkServlet {
 	 */
 	protected void initStrategies(ApplicationContext context) {
 		initMultipartResolver(context);
+		//初始化LocaleResolver
 		initLocaleResolver(context);
 		initThemeResolver(context);
 		initHandlerMappings(context);
+		//初始化HandlerAdapters
 		initHandlerAdapters(context);
 		initHandlerExceptionResolvers(context);
 		initRequestToViewNameTranslator(context);
@@ -1011,6 +1013,7 @@ public class DispatcherServlet extends FrameworkServlet {
 				multipartRequestParsed = (processedRequest != request);
 
 				// Determine handler for the current request.
+				//①使用HandlerMapping拿到Handler(Controller等)
 				mappedHandler = getHandler(processedRequest);
 				if (mappedHandler == null) {
 					noHandlerFound(processedRequest, response);
@@ -1018,6 +1021,8 @@ public class DispatcherServlet extends FrameworkServlet {
 				}
 
 				// Determine handler adapter for the current request.
+				//获取HandlerAdapter,HandlerAdapter屏蔽了各种Handler之间的差异
+				//可以直接调用HandlerAdapter.handle(request,handler)处理请求
 				HandlerAdapter ha = getHandlerAdapter(mappedHandler.getHandler());
 
 				// Process last-modified header, if supported by the handler.
@@ -1035,6 +1040,7 @@ public class DispatcherServlet extends FrameworkServlet {
 				}
 
 				// Actually invoke the handler.
+				//②使用Controller进行处理，拿到ModelAndView
 				mv = ha.handle(processedRequest, response, mappedHandler.getHandler());
 
 				if (asyncManager.isConcurrentHandlingStarted()) {
@@ -1052,6 +1058,7 @@ public class DispatcherServlet extends FrameworkServlet {
 				// making them available for @ExceptionHandler methods and other scenarios.
 				dispatchException = new NestedServletException("Handler dispatch failed", err);
 			}
+			//③渲染结果
 			processDispatchResult(processedRequest, response, mappedHandler, mv, dispatchException);
 		}
 		catch (Exception ex) {
@@ -1071,6 +1078,7 @@ public class DispatcherServlet extends FrameworkServlet {
 			else {
 				// Clean up any resources used by a multipart request.
 				if (multipartRequestParsed) {
+					//调用MultipartResolver.cleanupMultipart()释放处理文件上传过程中所占用的资源
 					cleanupMultipart(processedRequest);
 				}
 			}
@@ -1344,6 +1352,7 @@ public class DispatcherServlet extends FrameworkServlet {
 		String viewName = mv.getViewName();
 		if (viewName != null) {
 			// We need to resolve the view name.
+			//使用ViewResolver获取View
 			view = resolveViewName(viewName, mv.getModelInternal(), locale, request);
 			if (view == null) {
 				throw new ServletException("Could not resolve view with name '" + mv.getViewName() +
@@ -1367,6 +1376,7 @@ public class DispatcherServlet extends FrameworkServlet {
 			if (mv.getStatus() != null) {
 				response.setStatus(mv.getStatus().value());
 			}
+			//使用view进行结果的渲染。
 			view.render(mv.getModelInternal(), request, response);
 		}
 		catch (Exception ex) {

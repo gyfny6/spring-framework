@@ -47,7 +47,9 @@ public class SimpleMappingExceptionResolver extends AbstractHandlerExceptionReso
 	/** The default name of the exception attribute: "exception". */
 	public static final String DEFAULT_EXCEPTION_ATTRIBUTE = "exception";
 
-
+	/**
+	 * exception名称 -> viewName的映射
+	 */
 	@Nullable
 	private Properties exceptionMappings;
 

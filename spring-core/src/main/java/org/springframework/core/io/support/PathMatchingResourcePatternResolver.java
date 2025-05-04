@@ -270,6 +270,11 @@ public class PathMatchingResourcePatternResolver implements ResourcePatternResol
 	}
 
 
+	/**
+	 * 同样实现了单个资源的加载，实现是委派给内部的resourceLoader加载的
+	 * @param location the resource location
+	 * @return
+	 */
 	@Override
 	public Resource getResource(String location) {
 		return getResourceLoader().getResource(location);

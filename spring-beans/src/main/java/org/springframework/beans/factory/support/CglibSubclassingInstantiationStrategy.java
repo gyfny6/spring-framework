@@ -77,6 +77,9 @@ public class CglibSubclassingInstantiationStrategy extends SimpleInstantiationSt
 		return instantiateWithMethodInjection(bd, beanName, owner, null);
 	}
 
+	/**
+	 * 通过CGLIB的动态字节码生成功能
+	 */
 	@Override
 	protected Object instantiateWithMethodInjection(RootBeanDefinition bd, @Nullable String beanName, BeanFactory owner,
 			@Nullable Constructor<?> ctor, Object... args) {

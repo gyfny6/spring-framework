@@ -50,6 +50,7 @@ import org.springframework.core.io.ResourceLoader;
  * @see org.springframework.core.io.ResourceLoader
  * @see org.springframework.context.ApplicationContext
  * @see org.springframework.context.ResourceLoaderAware
+ * 批量查找的ResourceLoader
  */
 public interface ResourcePatternResolver extends ResourceLoader {
 
@@ -63,7 +64,7 @@ public interface ResourcePatternResolver extends ResourceLoader {
 	String CLASSPATH_ALL_URL_PREFIX = "classpath*:";
 
 	/**
-	 * 根据指定的资源路径匹配模式每次返回多个 Resource 实例
+	 * 根据指定的资源路径匹配模式返回多个 Resource 实例
 	 * Resolve the given location pattern into Resource objects.
 	 * <p>Overlapping resource entries that point to the same physical
 	 * resource should be avoided, as far as possible. The result should

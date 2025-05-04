@@ -288,6 +288,7 @@ public class ContextLoader {
 						ApplicationContext parent = loadParentContext(servletContext);
 						cwac.setParent(parent);
 					}
+					//配置以及属性容器
 					configureAndRefreshWebApplicationContext(cwac, servletContext);
 				}
 			}
@@ -383,6 +384,7 @@ public class ContextLoader {
 		}
 
 		wac.setServletContext(sc);
+		//获取Spring配置文件的位置
 		String configLocationParam = sc.getInitParameter(CONFIG_LOCATION_PARAM);
 		if (configLocationParam != null) {
 			wac.setConfigLocation(configLocationParam);
@@ -397,6 +399,7 @@ public class ContextLoader {
 		}
 
 		customizeContext(sc, wac);
+		//刷新容器
 		wac.refresh();
 	}
 

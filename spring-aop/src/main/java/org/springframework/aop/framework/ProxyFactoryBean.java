@@ -102,12 +102,14 @@ public class ProxyFactoryBean extends ProxyCreatorSupport
 
 	protected final Log logger = LogFactory.getLog(getClass());
 
+	//指定将要织入的advisor,拦截器,Advice
 	@Nullable
 	private String[] interceptorNames;
 
 	@Nullable
 	private String targetName;
 
+	//自动检测代理接口
 	private boolean autodetectInterfaces = true;
 
 	private boolean singleton = true;

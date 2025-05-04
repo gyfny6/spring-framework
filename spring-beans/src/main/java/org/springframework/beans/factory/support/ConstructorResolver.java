@@ -119,6 +119,7 @@ class ConstructorResolver {
 			@Nullable Constructor<?>[] chosenCtors, @Nullable Object[] explicitArgs) {
 		//封装BeanWrapperImpl对象，并进行初始化
 		BeanWrapperImpl bw = new BeanWrapperImpl();
+		//这里其实会复制一份BeanFactory中的PropertyEditor给BeanWrapperImpl
 		this.beanFactory.initBeanWrapper(bw);
 
 		Constructor<?> constructorToUse = null;//构造函数

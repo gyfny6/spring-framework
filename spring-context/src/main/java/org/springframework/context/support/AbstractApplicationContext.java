@@ -195,6 +195,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	private Thread shutdownHook;
 
 	/** ResourcePatternResolver used by this context. */
+	//默认是PathMatchingResourcePatternResolver
 	private ResourcePatternResolver resourcePatternResolver;
 
 	/**
@@ -454,6 +455,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 * @see org.springframework.core.io.support.PathMatchingResourcePatternResolver
 	 */
 	protected ResourcePatternResolver getResourcePatternResolver() {
+		//PathMatchingResourcePatternResolver需要ResourceLoader，
+		//AbstractApplicationContext本身就是ResourceLoader，所以贡献自己
 		return new PathMatchingResourcePatternResolver(this);
 	}
 
@@ -549,7 +552,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				// Initialize message source for this context.
 				initMessageSource();
 
-				//初始化事件广播器
+				//初始化事件广播器(多播器)
 				// Initialize event multicaster for this context.
 				initApplicationEventMulticaster();
 
@@ -792,19 +795,12 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		if (beanFactory.containsLocalBean(APPLICATION_EVENT_MULTICASTER_BEAN_NAME)) {
 			this.applicationEventMulticaster =
 					beanFactory.getBean(APPLICATION_EVENT_MULTICASTER_BEAN_NAME, ApplicationEventMulticaster.class);
-			if (logger.isTraceEnabled()) {
-				logger.trace("Using ApplicationEventMulticaster [" + this.applicationEventMulticaster + "]");
-			}
 		}
 		else {
 			//没有的话，就新建SimpleApplicationEventMulticaster
 			this.applicationEventMulticaster = new SimpleApplicationEventMulticaster(beanFactory);
 			//手动注册进SingletonBeanRegistry
 			beanFactory.registerSingleton(APPLICATION_EVENT_MULTICASTER_BEAN_NAME, this.applicationEventMulticaster);
-			if (logger.isTraceEnabled()) {
-				logger.trace("No '" + APPLICATION_EVENT_MULTICASTER_BEAN_NAME + "' bean, using " +
-						"[" + this.applicationEventMulticaster.getClass().getSimpleName() + "]");
-			}
 		}
 	}
 
@@ -1369,6 +1365,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 	@Override
 	public Resource[] getResources(String locationPattern) throws IOException {
+		//直接委派给内部的ResourcePatternResolver
 		return this.resourcePatternResolver.getResources(locationPattern);
 	}
 

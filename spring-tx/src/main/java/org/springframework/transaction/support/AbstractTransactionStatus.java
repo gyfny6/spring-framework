@@ -46,6 +46,7 @@ import org.springframework.transaction.TransactionUsageException;
  */
 public abstract class AbstractTransactionStatus implements TransactionStatus {
 
+	//标记事务回滚
 	private boolean rollbackOnly = false;
 
 	private boolean completed = false;
@@ -150,6 +151,8 @@ public abstract class AbstractTransactionStatus implements TransactionStatus {
 	/**
 	 * Roll back to the savepoint that is held for the transaction
 	 * and release the savepoint right afterwards.
+	 *
+	 * 回滚到为事务保留的保存点，然后立即释放保存点
 	 */
 	public void rollbackToHeldSavepoint() throws TransactionException {
 		Object savepoint = getSavepoint();

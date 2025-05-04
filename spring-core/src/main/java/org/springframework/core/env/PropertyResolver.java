@@ -107,7 +107,7 @@ public interface PropertyResolver {
 	 * @throws IllegalArgumentException if given text is {@code null}
 	 * @see #resolveRequiredPlaceholders
 	 * @see org.springframework.util.SystemPropertyUtils#resolvePlaceholders(String)
-	 * 替换文本中的占位符,找不到不解析
+	 * 替换文本中的占位符,找不到就不解析占位符
 	 */
 	String resolvePlaceholders(String text);
 
